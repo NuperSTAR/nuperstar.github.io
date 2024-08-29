@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="icon" type="image/x-icon" href="icon.ico" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NuperSITE - Tools (DEV)</title>
+    <style>
+      body {
+        cursor: url("cursor.png"), default;
+        font-family: "Lexend", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #1b1b1bff;
+        color: white;
+      }
+
+      .header {
+        background-color: #434343ff;
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        border-radius: 50px;
+      }
+
+      .iconimage {
+        border-radius: 10px;
+        cursor: url("link.png"), pointer;
+      }
+
+      .header img {
+        height: 50px;
+        /* Adjust the height as needed */
+      }
+
+      .header .title {
+        font-size: 24px;
+        margin-right: 10px;
+        /* You can adjust the margin as needed */
+      }
+
+      .navbar {
+        margin-left: auto;
+        /* This pushes the navbar to the right */
+        display: flex;
+      }
+
+      .navbar a {
+        color: white;
+        text-decoration: none;
+        margin-left: 20px;
+        padding: 5px 10px;
+        transition: background-color 0.3s;
+      }
+
+      .navbar a:hover {
+        cursor: url("link.png"), pointer;
+        background-color: #555;
+      }
+
+      .navbar {
+        display: flex;
+      }
+
+      .navbar a {
+        cursor: url("link.png"), pointer;
+        color: white;
+        text-decoration: none;
+        margin-left: 20px;
+        padding: 5px 10px;
+        transition: background-color 0.3s;
+      }
+
+      .navbar a:hover {
+        background-color: #555;
+      }
+
+      .content,
+      .contenttwo,
+      .contentthree,
+      .contentfour {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        /* Align items to the start of the container */
+        flex-wrap: wrap;
+        /* Allows items to wrap within the container */
+        margin: 10px auto;
+        /* Gives some space at the top and bottom, centers horizontally */
+        padding: 20px;
+        /* Adds padding inside the container */
+      }
+
+      .box {
+        background-color: #444;
+        border-radius: 20px;
+        padding: 20px;
+        width: 200px;
+        /* Set a fixed width, or use percentages if you prefer */
+        height: 250px;
+        /* Adjust height as necessary */
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        margin: 19px;
+      }
+
+      .box:hover {
+        cursor: url("link.png"), pointer;
+        transform: translateY(-10px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      }
+
+      .box .name {
+        font-size: 20px;
+      }
+
+      .button {
+        padding: 10px 20px;
+        background-color: var(--button-color);
+        color: var(--text-color);
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        transition-duration: 0.4s;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+      }
+
+      .dropdown {
+        position: absolute;
+        top: 60px;
+        left: 0;
+        background-color: rgba(68, 68, 68, 0.3);
+        border-radius: 20px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        z-index: 1000;
+        padding: 20px;
+        width: 300px;
+        backdrop-filter: blur(5px);
+        /* Apply blur to the dropdown background */
+      }
+
+      .dropdown a {
+        color: white;
+        text-decoration: none;
+        display: block;
+        padding: 10px 0;
+        transition: background-color 0.3s;
+      }
+
+      .dropdown a:hover {
+        cursor: url("link.png"), pointer;
+        background-color: #555;
+      }
+
+      body.blurred {
+        filter: blur(10px);
+        /* Apply blur to the background when dropdown is open */
+      }
+    </style>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <script>
+    function toggleDropdown() {
+      var dropdown = document.getElementById("dropdownMenu");
+      if (dropdown.style.visibility === "visible") {
+        dropdown.style.visibility = "hidden";
+        dropdown.style.opacity = 0;
+      } else {
+        dropdown.style.visibility = "visible";
+        dropdown.style.opacity = 1;
+      }
+    }
+
+    window.onclick = function (event) {
+      if (!event.target.matches(".iconimage")) {
+        var dropdowns = document.getElementsByClassName("dropdown");
+        for (var i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          openDropdown.style.visibility = "hidden";
+          openDropdown.style.opacity = 0;
+        }
+      }
+    };
+  </script>
+  <body>
+    <div class="header">
+      <img
+        src="images/icon.png"
+        class="iconimage"
+        alt="Logo"
+        onclick="toggleDropdown()"
+      />
+
+      <!-- Dropdown menu -->
+      <div class="dropdown" id="dropdownMenu">
+        <h3>Selection of pages.</h3>
+        <a href="index.html">Home</a>
+        <a href="stuff.html">Stuff</a>
+        <a href="tools.html">Tools</a>
+        <a href="videos/list">Videos (Beta)</a>
+      </div>
+
+      <div class="title">⠀NuperSITE</div>
+      <div class="navbar">
+        <a href="index.html">Home</a>
+        <a href="stuff.html">Stuff</a>
+        <a href="tools.html">Tools</a>
+      </div>
+    </div>
+    <div class="content">
+      <div class="box" onclick="location.href='calculator/math.html';">
+        <div
+          style="
+            width: 100%;
+            height: 80%;
+            border-radius: 15px 15px 0 0;
+            background-image: url('images/calcu.png');
+            background-size: cover;
+            background-position: center;
+          "
+        ></div>
+        <div class="name">Calculator</div>
+      </div>
+
+      <div
+        class="box"
+        onclick="location.href='advancedcalculator/calculator.html';"
+      >
+        <div
+          style="
+            width: 100%;
+            height: 80%;
+            border-radius: 15px 15px 0 0;
+            background-image: url('images/calcu.png');
+            background-size: cover;
+            background-position: center;
+          "
+        ></div>
+        <div class="name">Sci Calculator</div>
+      </div>
+    </div>
+
+    <div class="header">
+      <p>
+        more educational stuff will be added soon (nupersite turning into
+        educational??)
+      </p>
+    </div>
+  </body>
+</html>

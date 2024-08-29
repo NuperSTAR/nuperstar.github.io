@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NuperSITE - Video List (DEV)</title>
+    <style>
+      body {
+        font-family: "Lexend", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #1b1b1bff;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      .header-text {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .header-text h1 {
+        font-size: 36px;
+        margin: 0;
+      }
+
+      .header-text p {
+        font-size: 18px;
+        margin: 5px 0 0;
+      }
+
+      .container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        width: 100%;
+        max-width: 1200px;
+        /* Optional: Limit max width of the grid */
+        padding: 0 20px;
+        /* Add some padding to the container */
+        box-sizing: border-box;
+        /* Include padding in width calculation */
+      }
+
+      .box {
+        background-color: #444;
+        border-radius: 20px;
+        height: 150px;
+        overflow: hidden;
+        position: relative;
+        transition: transform 0.2s, font-size 0.2s;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+        text-align: center;
+      }
+
+      .box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: blur(20px);
+        transition: filter 0.2s;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      .box .content {
+        background-color: rgba(68, 68, 68, 0.8);
+        width: 100%;
+        padding: 10px;
+        z-index: 1;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(5px);
+      }
+
+      .box .name {
+        font-size: 18px;
+        margin: 0;
+        transition: font-size 0.2s;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        z-index: 2;
+      }
+
+      .box:hover .name {
+        white-space: normal;
+        font-size: 22px;
+      }
+
+      .box:hover {
+        cursor: url("link.png"), pointer;
+        transform: scale(1.05);
+      }
+
+      .box:hover img {
+        filter: blur(5px);
+      }
+
+      .box:hover .content {
+        font-size: 22px;
+        backdrop-filter: blur(10px);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="header-text">
+      <h1>Videos List</h1>
+      <p>
+        Here belongs to the video list, tap on one, there sents you to the
+        video! Beware there is autoplay, im just telling you that! 🤑🤑🤑🤑🤑
+      </p>
+      <h1>To the owners.</h1>
+      <p>
+        If you dont want your video to be here, (max desing pro is here video is
+        mine lol) please contact me, at nupersite@outlook.com
+      </p>
+    </div>
+    <div class="container">
+      <div class="box" onclick="location.href='jeff.html'">
+        <img src="/images/jeff.png" alt="Video 1 Thumbnail" />
+        <div class="content">
+          <p class="name">Jeff Visits The Dark Web</p>
+        </div>
+      </div>
+      <div class="box" onclick="location.href='bill.html'">
+        <img src="/images/bill.png" alt="Video 2 Thumbnail" />
+        <div class="content">
+          <p class="name">Brotherman Bill</p>
+        </div>
+      </div>
+      <div class="box" onclick="location.href='twiddlefinger.html'">
+        <img src="/images/twiddlefinger.png" alt="Video 3 Thumbnail" />
+        <div class="content">
+          <p class="name">Twiddlefinger</p>
+        </div>
+      </div>
+
+      <div class="box" onclick="location.href='max.html'">
+        <img src="/images/maxx.png" alt="Video 2 Thumbnail" />
+        <div class="content">
+          <p class="name">max desing pro is here</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
