@@ -14,13 +14,24 @@
         background-color: #1b1b1bff;
         color: white;
       }
-
       .header {
-        background-color: #434343ff;
+        background-color: rgba(68, 68, 68, 0.3);
         padding: 10px 20px;
         display: flex;
         align-items: center;
         border-radius: 50px;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 100;
+        box-sizing: border-box; /* Ensures padding doesn't affect width */
+        backdrop-filter: blur(10px);
+      }
+
+      .navbar {
+        margin-left: auto;
+        display: flex;
+        justify-content: flex-end; /* Ensures links stay to the right */
       }
 
       .iconimage {
@@ -35,11 +46,6 @@
       .header .title {
         font-size: 24px;
         margin-right: 10px;
-      }
-
-      .navbar {
-        margin-left: auto;
-        display: flex;
       }
 
       .navbar a {
@@ -65,7 +71,7 @@
         align-items: flex-start;
         flex-wrap: wrap;
         margin: 10px auto;
-        padding: 20px;
+        padding: 65px;
       }
 
       .box {
@@ -123,12 +129,16 @@
 
       .search-bar {
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-        margin-top: 20px;
         padding: 10px;
-        background-color: #434343ff;
-        border-radius: 20px;
+        background-color: rgb(46, 46, 46);
+        border-radius: 10px;
         display: flex;
-        justify-content: space-between;
+        position: fixed;
+        z-index: 100;
+
+        left: 50%; /* Center horizontally */
+        transform: translateX(-50%); /* Adjust to perfectly center */
+        top: 10px; /* Adjust this value to control vertical position */
       }
 
       .search-input {
@@ -167,7 +177,7 @@
         position: absolute;
         top: 60px;
         left: 0;
-        background-color: rgba(68, 68, 68, 0.3);
+        background-color: rgba(68, 68, 68);
         border-radius: 20px;
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
         visibility: hidden;
@@ -176,7 +186,8 @@
         z-index: 1000;
         padding: 20px;
         width: 300px;
-        backdrop-filter: blur(5px);
+        backdrop-filter: blur(10px);
+
         /* Apply blur to the dropdown background */
       }
 
@@ -357,7 +368,7 @@
         <a href="index.html">Home</a>
         <a href="stuff.html">Stuff</a>
         <a href="tools.html">Tools</a>
-        <a href="videos/list">Videos (Beta)</a>
+        <a href="videos/list.html">Videos (Beta)</a>
       </div>
 
       <div class="title">⠀NuperSITE</div>
@@ -365,6 +376,7 @@
         <a href="index.html">Home</a>
         <a href="stuff.html">Stuff</a>
         <a href="tools.html">Tools</a>
+        <a href="troubleshooting.html">Troubleshooting</a>
       </div>
     </div>
     <div class="search-bar">

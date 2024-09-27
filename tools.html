@@ -16,11 +16,17 @@
       }
 
       .header {
-        background-color: #434343ff;
+        background-color: rgba(68, 68, 68, 0.3);
         padding: 10px 20px;
         display: flex;
         align-items: center;
         border-radius: 50px;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 100;
+        box-sizing: border-box; /* Ensures padding doesn't affect width */
+        backdrop-filter: blur(10px);
       }
 
       .iconimage {
@@ -38,11 +44,10 @@
         margin-right: 10px;
         /* You can adjust the margin as needed */
       }
-
       .navbar {
         margin-left: auto;
-        /* This pushes the navbar to the right */
         display: flex;
+        justify-content: flex-end; /* Ensures links stay to the right */
       }
 
       .navbar a {
@@ -51,6 +56,7 @@
         margin-left: 20px;
         padding: 5px 10px;
         transition: background-color 0.3s;
+        white-space: nowrap; /* Prevent text wrapping */
       }
 
       .navbar a:hover {
@@ -78,17 +84,14 @@
       .content,
       .contenttwo,
       .contentthree,
-      .contentfour {
+      .contentfour,
+      .contentfive {
         display: flex;
         justify-content: center;
         align-items: flex-start;
-        /* Align items to the start of the container */
         flex-wrap: wrap;
-        /* Allows items to wrap within the container */
         margin: 10px auto;
-        /* Gives some space at the top and bottom, centers horizontally */
-        padding: 20px;
-        /* Adds padding inside the container */
+        padding: 65px;
       }
 
       .box {
@@ -213,7 +216,7 @@
         <a href="index.html">Home</a>
         <a href="stuff.html">Stuff</a>
         <a href="tools.html">Tools</a>
-        <a href="videos/list">Videos (Beta)</a>
+        <a href="videos/list.html">Videos (Beta)</a>
       </div>
 
       <div class="title">⠀NuperSITE</div>
@@ -221,6 +224,7 @@
         <a href="index.html">Home</a>
         <a href="stuff.html">Stuff</a>
         <a href="tools.html">Tools</a>
+        <a href="troubleshooting.html">Troubleshooting</a>
       </div>
     </div>
     <div class="content">
@@ -254,13 +258,6 @@
         ></div>
         <div class="name">Sci Calculator</div>
       </div>
-    </div>
-
-    <div class="header">
-      <p>
-        more educational stuff will be added soon (nupersite turning into
-        educational??)
-      </p>
     </div>
   </body>
 </html>

@@ -20,11 +20,32 @@
       }
 
       .header {
-        background-color: #434343ff;
+        background-color: rgba(68, 68, 68, 0.3);
         padding: 10px 20px;
         display: flex;
         align-items: center;
         border-radius: 50px;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 100;
+        box-sizing: border-box; /* Ensures padding doesn't affect width */
+        backdrop-filter: blur(10px);
+      }
+
+      .navbar {
+        margin-left: auto;
+        display: flex;
+        justify-content: flex-end; /* Ensures links stay to the right */
+      }
+
+      .navbar a {
+        color: white;
+        text-decoration: none;
+        margin-left: 20px;
+        padding: 5px 10px;
+        transition: background-color 0.3s;
+        white-space: nowrap; /* Prevent text wrapping */
       }
 
       .iconimage {
@@ -39,21 +60,6 @@
       .header .title {
         font-size: 24px;
         margin-right: 10px;
-      }
-
-      .navbar {
-        cursor: url("link.png"), default;
-        margin-left: auto;
-        display: flex;
-      }
-
-      .navbar a {
-        cursor: url("link.png"), pointer;
-        color: white;
-        text-decoration: none;
-        margin-left: 20px;
-        padding: 5px 10px;
-        transition: background-color 0.3s;
       }
 
       .navbar a:hover {
@@ -277,7 +283,7 @@
           <a href="index.html">Home</a>
           <a href="stuff.html">Stuff</a>
           <a href="tools.html">Tools</a>
-          <a href="videos/list">Videos (Beta)</a>
+          <a href="videos/list.html">Videos (Beta)</a>
         </div>
       </div>
       <div class="title">⠀NuperSITE</div>
@@ -285,6 +291,7 @@
         <a href="index.html">Home</a>
         <a href="stuff.html">Stuff</a>
         <a href="tools.html">Tools</a>
+        <a href="troubleshooting.html">Troubleshooting</a>
       </div>
     </div>
 
@@ -298,7 +305,7 @@
       <p>Attempts left: <span id="attempts">10</span></p>
     </div>
 
-    <div class="content">
+    <div class="content" style="padding: 65px">
       <h1 class="middle">Hello!</h1>
       <p class="middle">
         Hi! This is a game website, although not because there is educational
@@ -323,27 +330,21 @@
   </footer>
 
   <div class="updates">
-    <h1 class="middle">The Game Update | Last Updated: Aug 28 5:52PM CST</h1>
+    <h1 class="middle">Updates| Last Updated: Aug 28 5:52PM CST</h1>
     <p>
-      Its been a while, so I had added more games for you! Check you stuff tab!
+      Hey there! New updates, new design! Navbar is fixed up so you can scroll
+      with the navbar there!
     </p>
 
-    <p>
-      Drop down! Click on the navbar logo to see selections of pages around the
-      website!
-    </p>
+    <p>Bluuuurrr design! Navbar has blur background, adds a nice touch!</p>
 
-    <p>
-      Videos tab is in the the drop down, for people that dont know to access it
-      (request videos from 2 section)
-    </p>
+    <p>Videos tab is FIXED!</p>
 
-    <p>
-      Made the stuff games short instead of top by top divs that make it hard to
-      put boxes (games)
-    </p>
+    <p>Search bar is now attacted to the navbar when in stuff.</p>
 
-    <p>More downloadable stuff!</p>
+    <p>Added another educational stuff in Tools tab.</p>
+
+    <p>Huge bug fixes.</p>
   </div>
 
   <footer>

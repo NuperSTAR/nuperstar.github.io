@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="icon" type="image/x-icon" href="icon.ico" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NuperSITE - Troubleshooting</title>
+    <style>
+      body {
+        font-family: "Lexend", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #1b1b1bff;
+        color: white;
+        cursor: url("cursor.png"), default;
+      }
+
+      .middle {
+        text-align: center;
+      }
+
+      .header {
+        background-color: rgba(68, 68, 68, 0.3);
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        border-radius: 50px;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 100;
+        box-sizing: border-box;
+        backdrop-filter: blur(10px);
+      }
+
+      .navbar {
+        margin-left: auto;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .navbar a {
+        color: white;
+        text-decoration: none;
+        margin-left: 20px;
+        padding: 5px 10px;
+        transition: background-color 0.3s;
+        white-space: nowrap;
+      }
+
+      .iconimage {
+        border-radius: 10px;
+        cursor: url("link.png"), pointer;
+      }
+
+      .header img {
+        height: 50px;
+      }
+
+      .header .title {
+        font-size: 24px;
+        margin-right: 10px;
+      }
+
+      .navbar a:hover {
+        background-color: #555;
+      }
+
+      .box {
+        background-color: #444;
+        border-radius: 20px;
+        padding: 20px;
+        width: 300px;
+        height: auto;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 20px auto;
+      }
+
+      .box:hover {
+        cursor: url("link.png"), pointer;
+        transform: scale(1.05);
+      }
+
+      .box .name {
+        font-size: 20px;
+      }
+
+      .dropdown-content {
+        display: none;
+        background-color: rgba(68, 68, 68, 0.3);
+        border-radius: 10px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        margin-top: 10px;
+        padding: 10px;
+        width: 100%;
+        text-align: left;
+      }
+
+      .box.open .dropdown-content {
+        display: block;
+      }
+
+      footer {
+        text-align: center;
+        padding: 20px;
+        background-color: #434343ff;
+        margin-top: 40px;
+        border-radius: 20px;
+      }
+
+      footer p {
+        margin: 0;
+        font-size: 16px;
+      }
+
+      footer a {
+        cursor: url("link.png"), pointer;
+        color: white;
+        text-decoration: underline;
+      }
+
+      /* Media Query for smaller screens */
+      @media (max-width: 600px) {
+        .box {
+          width: 90%;
+        }
+
+        .navbar {
+          flex-direction: column;
+        }
+
+        .navbar a {
+          margin: 10px 0;
+        }
+      }
+
+      .dropdown {
+        position: absolute;
+        top: 60px;
+        left: 0;
+        background-color: rgba(68, 68, 68, 0.3);
+        border-radius: 20px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        z-index: 1000;
+        padding: 20px;
+        width: 300px;
+        backdrop-filter: blur(5px);
+        /* Apply blur to the dropdown background */
+      }
+
+      .dropdown a {
+        color: white;
+        text-decoration: none;
+        display: block;
+        padding: 10px 0;
+        transition: background-color 0.3s;
+      }
+
+      .dropdown a:hover {
+        cursor: url("link.png"), pointer;
+        background-color: #555;
+      }
+    </style>
+  </head>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lexend&display=swap"
+    rel="stylesheet"
+  />
+  <body>
+    <div class="header">
+      <div style="position: relative">
+        <img src="images/icon.png" class="iconimage" alt="Logo" />
+      </div>
+      <div class="title">⠀NuperSITE</div>
+      <div class="navbar">
+        <a href="index.html">Home</a>
+        <a href="stuff.html">Stuff</a>
+        <a href="tools.html">Tools</a>
+        <a href="troubleshooting.html">Troubleshooting</a>
+      </div>
+
+      <div class="dropdown" id="dropdownMenu">
+        <h3>Selection of pages.</h3>
+        <a href="index.html">Home</a>
+        <a href="stuff.html">Stuff</a>
+        <a href="tools.html">Tools</a>
+        <a href="videos/list.html">Videos (Beta)</a>
+      </div>
+    </div>
+
+    <div class="content" style="padding: 85px">
+      <h1 class="middle">Troubleshooting</h1>
+      <p class="middle">
+        Welcome to the troubleshooting page! Here lets you fix stuff by your own
+        with this guide! There is not alot, so you can email me for more
+        troubleshooting dropdowns.
+      </p>
+
+      <div class="box" onclick="toggleDropdown(this)">
+        <div class="name">Not loading any images.</div>
+        <div class="dropdown-content">
+          <p>
+            <strong>How to Fix:</strong> Usually a quick refresh and its fixed,
+            but if not, check your internet connection or that if its completely
+            blocked.
+          </p>
+        </div>
+      </div>
+
+      <div class="box" onclick="toggleDropdown(this)">
+        <div class="name">No videos are not playing in the Videos tab.</div>
+        <div class="dropdown-content">
+          <p>
+            <strong>How to Fix:</strong> Check if your browser supports the
+            video format, ensure your admin didnt block this website, and verify
+            that JavaScript is enabled (should be enabled by default).
+          </p>
+        </div>
+      </div>
+
+      <div class="box" onclick="toggleDropdown(this)">
+        <div class="name">Games arent loading or says "File not found.".</div>
+        <div class="dropdown-content">
+          <p>
+            <strong>How to Fix:</strong> If games arent loading up, or saying
+            "File not found." it usually me at this point, its my fault. Try to
+            put a ".html" at the end of the link.
+          </p>
+        </div>
+      </div>
+
+      <div class="box" onclick="toggleDropdown(this)">
+        <div class="name">Website is blocked, what can i do?</div>
+        <div class="dropdown-content">
+          <p>
+            <strong>How to Fix:</strong> You can wait before a new website
+            spawns in, but if you visit once or twice, you can play mario,
+            jumper, and any unity games you played in the stuff tab and still
+            works when its blocked.
+          </p>
+        </div>
+      </div>
+
+      <div class="box" onclick="toggleDropdown(this)">
+        <div class="name">What if i pressed "never click me" button?</div>
+        <div class="dropdown-content">
+          <p><strong>Answer:</strong> You have to find out.</p>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>
+        Any problems or any troubleshooting pages you want to add from here,
+        email me at
+        <a href="mailto:nupersite@outlook.com">nupersite@outlook.com</a>
+      </p>
+    </footer>
+
+    <script>
+      let dropdownOpen = null;
+
+      function toggleDropdown(element) {
+        // Close the previous dropdown if it's open
+        if (dropdownOpen && dropdownOpen !== element) {
+          dropdownOpen.classList.remove("open");
+        }
+
+        // Toggle the clicked dropdown
+        element.classList.toggle("open");
+
+        // Set the currently opened dropdown
+        dropdownOpen = element.classList.contains("open") ? element : null;
+      }
+    </script>
+  </body>
+</html>
