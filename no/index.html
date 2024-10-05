@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>haha gottem</title>
+    <script>
+        window.onload = function() {
+            fetch('https://ipapi.co/json/')
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                document.getElementById('ip').textContent = data.ip;
+                document.getElementById('city').textContent = data.city;
+                document.getElementById('region').textContent = data.region;
+                document.getElementById('region_code').textContent = data.region_code;
+                document.getElementById('country').textContent = data.country;
+                document.getElementById('country_name').textContent = data.country_name;
+                document.getElementById('country_code').textContent = data.country_code;
+                document.getElementById('country_code_iso3').textContent = data.country_code_iso3;
+                document.getElementById('country_capital').textContent = data.country_capital;
+                document.getElementById('country_tld').textContent = data.country_tld;
+                document.getElementById('continent_code').textContent = data.continent_code;
+                document.getElementById('in_eu').textContent = data.in_eu ? 'Yes' : 'No';
+                document.getElementById('postal').textContent = data.postal;
+                document.getElementById('latitude').textContent = data.latitude;
+                document.getElementById('longitude').textContent = data.longitude;
+                document.getElementById('timezone').textContent = data.timezone;
+                document.getElementById('utc_offset').textContent = data.utc_offset;
+                document.getElementById('country_calling_code').textContent = data.country_calling_code;
+                document.getElementById('currency').textContent = data.currency;
+                document.getElementById('currency_name').textContent = data.currency_name;
+                document.getElementById('languages').textContent = data.languages;
+                document.getElementById('country_area').textContent = data.country_area;
+                document.getElementById('country_population').textContent = data.country_population;
+                document.getElementById('asn').textContent = data.asn; // Assuming 'asn' is provided
+                document.getElementById('org').textContent = data.org; // Assuming 'org' is provided
+            })
+            .catch(function(error) {
+                console.log('its failled to get locations and details', error);
+                document.body.innerHTML = '<p>haha, you were lucky, your school probably blocked the infomation ot get it. its alright.</p>';
+            });
+        };
+    </script>
+</head>
+<body>
+
+    <h1> your dead son</h1>
+    <p><strong>IP:</strong> <span id="ip">Loading...</span></p>
+    <p><strong>City:</strong> <span id="city">Loading...</span></p>
+    <p><strong>Region:</strong> <span id="region">Loading...</span></p>
+    <p><strong>Region Code:</strong> <span id="region_code">Loading...</span></p>
+    <p><strong>Country:</strong> <span id="country">Loading...</span></p>
+    <p><strong>Country Name:</strong> <span id="country_name">Loading...</span></p>
+    <p><strong>Country Code:</strong> <span id="country_code">Loading...</span></p>
+    <p><strong>Country Code ISO3:</strong> <span id="country_code_iso3">Loading...</span></p>
+    <p><strong>Country Capital:</strong> <span id="country_capital">Loading...</span></p>
+    <p><strong>Country TLD:</strong> <span id="country_tld">Loading...</span></p>
+    <p><strong>Continent Code:</strong> <span id="continent_code">Loading...</span></p>
+    <p><strong>In EU:</strong> <span id="in_eu">Loading...</span></p>
+    <p><strong>Postal Code:</strong> <span id="postal">Loading...</span></p>
+    <p><strong>Latitude:</strong> <span id="latitude">Loading...</span></p>
+    <p><strong>Longitude:</strong> <span id="longitude">Loading...</span></p>
+    <p><strong>Timezone:</strong> <span id="timezone">Loading...</span></p>
+    <p><strong>UTC Offset:</strong> <span id="utc_offset">Loading...</span></p>
+    <p><strong>Country Calling Code:</strong> <span id="country_calling_code">Loading...</span></p>
+    <p><strong>Currency:</strong> <span id="currency">Loading...</span></p>
+    <p><strong>Currency Name:</strong> <span id="currency_name">Loading...</span></p>
+    <p><strong>Languages:</strong> <span id="languages">Loading...</span></p>
+    <p><strong>Country Area:</strong> <span id="country_area">Loading...</span></p>
+    <p><strong>Country Population:</strong> <span id="country_population">Loading...</span></p>
+    <p><strong>ASN:</strong> <span id="asn">Loading...</span></p>
+    <p><strong>Organization:</strong> <span id="org">Loading...</span></p>
+</body>
+</html>

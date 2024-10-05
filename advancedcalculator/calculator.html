@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scientific Calculator</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #000;
+        margin: 0;
+      }
+      .calculator {
+        width: 300px;
+        background-color: #333;
+        border-radius: 20px;
+        padding: 20px;
+      }
+      .screen {
+        width: 95%;
+        height: 40px;
+        background-color: #000;
+        color: white;
+        text-align: right;
+        padding: 10px;
+        margin-bottom: 20px;
+        font-size: 2em;
+        border: none;
+        border-radius: 10px;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+      .button-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+      .button {
+        width: 64px;
+        height: 64px;
+        background-color: #555;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        font-size: 1.5em;
+        cursor: pointer;
+      }
+      .button.orange {
+        background-color: orange;
+      }
+      .button.zero {
+        flex-grow: 1;
+        border-radius: 30px;
+      }
+      .button:active {
+        background-color: #ddd;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="calculator">
+      <div class="screen" id="display">0</div>
+      <div class="button-row">
+        <button class="button" onclick="clearDisplay()">C</button>
+        <button class="button" onclick="backspace()">⌫</button>
+        <button class="button" onclick="insert('%')">%</button>
+        <button class="button orange" onclick="insert('/')">÷</button>
+      </div>
+      <div class="button-row">
+        <button class="button" onclick="insert('7')">7</button>
+        <button class="button" onclick="insert('8')">8</button>
+        <button class="button" onclick="insert('9')">9</button>
+        <button class="button orange" onclick="insert('*')">×</button>
+      </div>
+      <div class="button-row">
+        <button class="button" onclick="insert('4')">4</button>
+        <button class="button" onclick="insert('5')">5</button>
+        <button class="button" onclick="insert('6')">6</button>
+        <button class="button orange" onclick="insert('-')">-</button>
+      </div>
+      <div class="button-row">
+        <button class="button" onclick="insert('1')">1</button>
+        <button class="button" onclick="insert('2')">2</button>
+        <button class="button" onclick="insert('3')">3</button>
+        <button class="button orange" onclick="insert('+')">+</button>
+      </div>
+      <div class="button-row">
+        <button class="button zero" onclick="insert('0')">0</button>
+        <button class="button" onclick="insert('.')">.</button>
+        <button class="button orange" onclick="calculate()">=</button>
+      </div>
+      <div class="button-row">
+        <button class="button" onclick="insert('(')">(</button>
+        <button class="button" onclick="insert(')')">)</button>
+        <button class="button" onclick="insert('Math.sin(')">sin</button>
+        <button class="button" onclick="insert('Math.cos(')">cos</button>
+        <button class="button" onclick="insert('Math.tan(')">tan</button>
+      </div>
+      <div class="button-row">
+        <button class="button" onclick="insert('Math.log(')">ln</button>
+        <button class="button" onclick="insert('Math.sqrt(')">√</button>
+        <button class="button" onclick="insert('Math.pow(')">xⁿ</button>
+      </div>
+    </div>
+    <script>
+      const display = document.getElementById("display");
+
+      function clearDisplay() {
+        display.textContent = "0";
+      }
+
+      function backspace() {
+        display.textContent = display.textContent.slice(0, -1) || "0";
+      }
+
+      function insert(value) {
+        if (display.textContent === "0") {
+          display.textContent = value;
+        } else {
+          display.textContent += value;
+        }
+      }
+
+      function calculate() {
+        try {
+          display.textContent = eval(
+            display.textContent.replace(/[^-()\d/*+.]/g, "")
+          );
+        } catch {
+          display.textContent = "Error";
+        }
+      }
+    </script>
+  </body>
+</html>
