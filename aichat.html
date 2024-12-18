@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="icon" type="image/x-icon" href="icon.ico" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NuperSITE - AI Chat</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Previous styles remain the same */
+      body {
+        cursor: url("cursor.png"), default;
+        font-family: "Lexend", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #1b1b1bff;
+        color: white;
+        min-height: 100vh;
+      }
+
+      .header {
+        background-color: rgba(68, 68, 68, 0.2);
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        border-radius: 50px;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 100;
+        box-sizing: border-box;
+        backdrop-filter: blur(10px);
+      }
+
+      .header img {
+        height: 50px;
+        border-radius: 10px;
+      }
+
+      .header .title {
+        font-size: 24px;
+        margin-right: 10px;
+      }
+
+      .navbar {
+        margin-left: auto;
+        display: flex;
+      }
+
+      .navbar a {
+        color: white;
+        text-decoration: none;
+        margin-left: 20px;
+        padding: 5px 10px;
+        transition: background-color 0.3s;
+        white-space: nowrap;
+      }
+
+      .navbar a:hover {
+        cursor: url("link.png"), pointer;
+        background-color: #555;
+      }
+
+      .content {
+        display: flex;
+        flex-direction: column;
+        padding: 80px 0 0 0;
+        height: calc(100vh - 80px);
+      }
+
+      .chat-container {
+        flex-grow: 1;
+        background-color: #222;
+        padding: 20px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .input-container {
+        background-color: #333;
+        padding: 15px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      input {
+        flex-grow: 1;
+        padding: 12px;
+        border: none;
+        border-radius: 20px;
+        background-color: #444;
+        color: white;
+        font-family: "Lexend", sans-serif;
+        font-size: 16px;
+      }
+
+      button {
+        padding: 12px 25px;
+        background-color: #555;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        font-family: "Lexend", sans-serif;
+        font-size: 16px;
+        cursor: url("link.png"), pointer;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: #666;
+      }
+
+      .message {
+        max-width: 70%;
+        padding: 12px 16px;
+        border-radius: 20px;
+        animation: fadeIn 0.3s ease-in-out;
+        word-wrap: break-word;
+      }
+
+      .user-message {
+        background-color: #444;
+        margin-left: auto;
+        border-bottom-right-radius: 5px;
+      }
+
+      .ai-message {
+        background-color: #2c2c2c;
+        margin-right: auto;
+        border-bottom-left-radius: 5px;
+      }
+
+      .typing-indicator {
+        display: flex;
+        gap: 5px;
+        padding: 12px 16px;
+        background-color: #2c2c2c;
+        border-radius: 20px;
+        width: fit-content;
+        margin-right: auto;
+        border-bottom-left-radius: 5px;
+      }
+
+      .typing-dot {
+        width: 8px;
+        height: 8px;
+        background-color: #fff;
+        border-radius: 50%;
+        animation: typing 1.4s infinite;
+      }
+
+      .typing-dot:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .typing-dot:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+
+      @keyframes typing {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-5px);
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <img
+        src="images/icon.png"
+        class="iconimage"
+        alt="Logo"
+        onclick="toggleDropdown()"
+      />
+      <div class="title">⠀NuperSITE</div>
+      <div class="navbar">
+        <a href="index.html">Home</a>
+        <a href="stuff.html">Stuff</a>
+        <a href="tools.html">Tools</a>
+        <a href="#">AI Chat</a>
+        <a href="troubleshooting.html">Troubleshooting</a>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="chat-container" id="chatContainer">
+        <div class="message ai-message">hello! what can i help for you?</div>
+      </div>
+      <div class="input-container">
+        <input
+          type="text"
+          id="promptInput"
+          placeholder="Type your message here..."
+          onkeypress="handleKeyPress(event)"
+        />
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+
+    <script>
+      // Initialize conversation history
+      let conversationHistory = [];
+
+      async function sendMessage() {
+        const input = document.getElementById("promptInput");
+        const chatContainer = document.getElementById("chatContainer");
+        const message = input.value.trim();
+
+        if (!message) return;
+
+        // Add user message to UI
+        const userDiv = document.createElement("div");
+        userDiv.className = "message user-message";
+        userDiv.textContent = message;
+        chatContainer.appendChild(userDiv);
+
+        // Add user message to history
+        conversationHistory.push({ role: "user", content: message });
+
+        // Clear input
+        input.value = "";
+
+        // Add typing indicator
+        const typingDiv = document.createElement("div");
+        typingDiv.className = "typing-indicator";
+        typingDiv.innerHTML =
+          '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+        chatContainer.appendChild(typingDiv);
+
+        // Scroll to bottom
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+
+        try {
+          // Send request with conversation history
+          const res = await fetch(
+            `https://chatbot.nupersite.org/?prompt=${encodeURIComponent(
+              message
+            )}&history=${encodeURIComponent(
+              JSON.stringify(conversationHistory)
+            )}`
+          );
+
+          if (!res.ok) {
+            throw new Error("Failed to fetch response");
+          }
+
+          const text = await res.text();
+
+          // Remove typing indicator
+          chatContainer.removeChild(typingDiv);
+
+          // Add AI response to UI
+          const aiDiv = document.createElement("div");
+          aiDiv.className = "message ai-message";
+          aiDiv.textContent = text;
+          chatContainer.appendChild(aiDiv);
+
+          // Add AI response to history
+          conversationHistory.push({ role: "assistant", content: text });
+        } catch (error) {
+          // Remove typing indicator
+          chatContainer.removeChild(typingDiv);
+
+          // Add error message
+          const errorDiv = document.createElement("div");
+          errorDiv.className = "message ai-message";
+          errorDiv.textContent = `Error: ${error.message}`;
+          chatContainer.appendChild(errorDiv);
+        }
+
+        // Scroll to bottom again after adding response
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      }
+
+      function handleKeyPress(event) {
+        if (event.key === "Enter") {
+          sendMessage();
+        }
+      }
+
+      function toggleDropdown() {
+        var dropdown = document.getElementById("dropdownMenu");
+        if (dropdown.style.visibility === "visible") {
+          dropdown.style.visibility = "hidden";
+          dropdown.style.opacity = 0;
+        } else {
+          dropdown.style.visibility = "visible";
+          dropdown.style.opacity = 1;
+        }
+      }
+    </script>
+  </body>
+</html>

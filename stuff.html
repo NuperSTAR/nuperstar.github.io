@@ -4,7 +4,7 @@
     <link rel="icon" type="image/x-icon" href="icon.ico" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NuperSITE - Stuff (DEV)</title>
+    <title>NuperSITE - Stuff</title>
     <style>
       body {
         cursor: url("cursor.png"), default;
@@ -70,7 +70,7 @@
         align-items: flex-start;
         flex-wrap: wrap;
         margin: 10px auto;
-        padding: 65px;
+        padding: -5px;
       }
 
       .box {
@@ -132,14 +132,9 @@
         background-color: rgb(46, 46, 46);
         border-radius: 10px;
         display: flex;
-        position: fixed;
-        z-index: 100;
-
-        left: 50%; /* Center horizontally */
-        transform: translateX(-50%); /* Adjust to perfectly center */
-        top: 10px; /* Adjust this value to control vertical position */
+        width: 400px;
+        margin: 80px auto 20px auto; /* Adds margin top and bottom, auto for left/right centering */
       }
-
       .search-input {
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
         background-color: #363535;
@@ -170,6 +165,21 @@
         cursor: url("link.png"), pointer;
         transform: translateY(-1px);
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      }
+
+      .filter-select {
+        background-color: #363535;
+        color: white;
+        font-family: "Lexend", sans-serif;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 10px;
+        margin-left: 10px;
+        cursor: pointer;
+      }
+
+      .filter-select:hover {
+        background-color: #444;
       }
 
       .dropdown {
@@ -349,6 +359,18 @@
           }
         }
       }
+
+      function filterContent(filter) {
+        const boxes = document.querySelectorAll(".box");
+        boxes.forEach((box) => {
+          const hasDownloadButton = box.querySelector(".circle-button");
+          if (filter === "downloadable") {
+            box.style.display = hasDownloadButton ? "" : "none";
+          } else {
+            box.style.display = "";
+          }
+        });
+      }
     </script>
   </head>
 
@@ -366,10 +388,11 @@
         <a href="index.html">Home</a>
         <a href="stuff.html">Stuff</a>
         <a href="tools.html">Tools</a>
-        <a href="videos/list.html">Videos</a>
+        <a href="aichat.html">AI Chat</a>
         <a href="troubleshooting.html">Troubleshooting</a>
       </div>
     </div>
+
     <div class="search-bar">
       <input
         type="text"
@@ -378,6 +401,10 @@
         placeholder="Search..."
         oninput="search()"
       />
+      <select class="filter-select" onchange="filterContent(this.value)">
+        <option value="all">All Items</option>
+        <option value="downloadable">Downloadable Only</option>
+      </select>
     </div>
     <div class="content">
               <head>
@@ -389,6 +416,7 @@
         </head> 
       
       <!-- box 1 -->
+
       <div class="box" onclick="location.href='mario/mario.html';">
         <div
           style="
