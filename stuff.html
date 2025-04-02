@@ -21,11 +21,15 @@
         align-items: center;
         border-radius: 50px;
         position: fixed;
-        width: 100%;
+        width: calc(100% - 40px); /* Adjust for padding */
         top: 0;
+        left: 0;
+        right: 0;
+        margin: 10px;
         z-index: 100;
-        box-sizing: border-box; /* Ensures padding doesn't affect width */
+        box-sizing: border-box;
         backdrop-filter: blur(10px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), 0 4px 10px rgba(0, 0, 0, 0.2);
       }
 
       .navbar {
@@ -46,14 +50,13 @@
         font-size: 24px;
         margin-right: 10px;
       }
-
       .navbar a {
-        cursor: url("link.png"), pointer;
         color: white;
         text-decoration: none;
-        margin-left: 20px;
-        padding: 5px 10px;
+        padding: 8px 16px;
+        border-radius: 20px;
         transition: background-color 0.3s;
+        white-space: nowrap;
       }
 
       .navbar a:hover {
@@ -70,7 +73,7 @@
         align-items: flex-start;
         flex-wrap: wrap;
         margin: 10px auto;
-        padding: -5px;
+        padding: -1px;
       }
 
       .box {
@@ -133,7 +136,7 @@
         border-radius: 10px;
         display: flex;
         width: 400px;
-        margin: 80px auto 20px auto; /* Adds margin top and bottom, auto for left/right centering */
+        margin: 100px auto 20px auto; /* Adds margin top and bottom, auto for left/right centering */
       }
       .search-input {
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -223,6 +226,11 @@
       rel="stylesheet"
     />
     <script>
+      console.log(
+        "I think chrome is moving towards a new experience that allows users to choose to browse without third-party cookies."
+      );
+      console.log("Well anyways just have fun!");
+
       function toggleDropdown() {
         var dropdown = document.getElementById("dropdownMenu");
         if (dropdown.style.visibility === "visible") {
@@ -388,7 +396,7 @@
         <a href="index.html">Home</a>
         <a href="stuff.html">Stuff</a>
         <a href="tools.html">Tools</a>
-        <a href="aichat.html">AI Chat</a>
+        <a href="aichat.html">AI</a>
         <a href="troubleshooting.html">Troubleshooting</a>
       </div>
     </div>
@@ -406,18 +414,10 @@
         <option value="downloadable">Downloadable Only</option>
       </select>
     </div>
-    <div class="content">
-              <head>
-          <script
-            async
-            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1921814372873360"
-            crossorigin="anonymous"
-          ></script>
-        </head> 
-      
+    <div class="content" style="padding: 20px">
       <!-- box 1 -->
 
-      <div class="box" onclick="location.href='mario/mario.html';">
+      <div class="box" onclick="location.href='mario/index.html';">
         <div
           style="
             width: 100%;
@@ -432,7 +432,7 @@
       </div>
 
       <!-- box 2 -->
-      <div class="box" onclick="location.href='timeshooter/shoot.html';">
+      <div class="box" onclick="location.href='timeshooter/index.html';">
         <div
           style="
             width: 100%;
@@ -447,7 +447,7 @@
       </div>
 
       <!-- box 3 -->
-      <div class="box" onclick="location.href='monkeymart/monkeys.html';">
+      <div class="box" onclick="location.href='monkeymart/index.html';">
         <div
           style="
             width: 100%;
@@ -462,7 +462,7 @@
       </div>
 
       <!-- box 4 -->
-      <div class="box" onclick="location.href='funnyshooter/funny.html';">
+      <div class="box" onclick="location.href='funnyshooter/index.html';">
         <div
           style="
             width: 100%;
@@ -477,7 +477,7 @@
       </div>
 
       <!-- box 5 -->
-      <div class="box" onclick="location.href='slope/slope.html';">
+      <div class="box" onclick="location.href='slope/index.html';">
         <div
           style="
             width: 100%;
@@ -492,7 +492,7 @@
       </div>
 
       <!-- box 6 -->
-      <div class="box" onclick="location.href='zigzag/zig.html';">
+      <div class="box" onclick="location.href='zigzag/index.html';">
         <div
           style="
             width: 100%;
@@ -507,7 +507,7 @@
       </div>
 
       <!-- box 7 -->
-      <div class="box" onclick="location.href='2048/game.html';">
+      <div class="box" onclick="location.href='2048/index.html';">
         <div
           style="
             width: 100%;
@@ -522,7 +522,7 @@
       </div>
 
       <!-- box 8 -->
-      <div class="box" onclick="location.href='minecraft/mine.html';">
+      <div class="box" onclick="location.href='minecraft/index.html';">
         <div
           style="
             width: 100%;
@@ -544,7 +544,7 @@
       </div>
 
       <!-- box 9 -->
-      <div class="box" onclick="location.href='cookie/cookie.html';">
+      <div class="box" onclick="location.href='cookie/index.html';">
         <div
           style="
             width: 100%;
@@ -565,7 +565,7 @@
       </div>
 
       <!-- box 10 -->
-      <div class="box" onclick="location.href='geometry/goofyahh.html';">
+      <div class="box" onclick="location.href='geometry/index.html';">
         <div
           style="
             width: 100%;
@@ -580,7 +580,7 @@
       </div>
 
       <!-- box 11 -->
-      <div class="box" onclick="location.href='sound/sound.html';">
+      <div class="box" onclick="location.href='sound/index.html';">
         <div
           style="
             width: 100%;
@@ -591,7 +591,7 @@
             background-position: center;
           "
         ></div>
-        <div class="name">Soundboard 2.6.1</div>
+        <div class="name">Soundboard 3.0.0</div>
         <div
           class="circle-button"
           onclick="event.stopPropagation(); downloadSoundBoard();"
@@ -601,7 +601,7 @@
       </div>
 
       <!-- box 12 -->
-      <div class="box" onclick="location.href='tile/game.html';">
+      <div class="box" onclick="location.href='tile/index.html';">
         <div
           style="
             width: 100%;
@@ -616,7 +616,7 @@
       </div>
 
       <!-- box 13 -->
-      <div class="box" onclick="location.href='tombofmask/game.html';">
+      <div class="box" onclick="location.href='tombofmask/index.html';">
         <div
           style="
             width: 100%;
@@ -631,7 +631,7 @@
       </div>
 
       <!-- box 14 -->
-      <div class="box" onclick="location.href='jumper/game.html';">
+      <div class="box" onclick="location.href='jumper/index.html';">
         <div
           style="
             width: 100%;
@@ -646,7 +646,7 @@
       </div>
 
       <!-- box 15 -->
-      <div class="box" onclick="location.href='sandboxels/sand.html';">
+      <div class="box" onclick="location.href='sandboxels/index.html';">
         <div
           style="
             width: 100%;
@@ -661,7 +661,7 @@
       </div>
 
       <!-- box 16 -->
-      <div class="box" onclick="location.href='crossy-road/game.html';">
+      <div class="box" onclick="location.href='crossy-road/index.html';">
         <div
           style="
             width: 100%;
@@ -676,7 +676,7 @@
       </div>
 
       <!-- box 17 -->
-      <div class="box" onclick="location.href='bitlife/game.html';">
+      <div class="box" onclick="location.href='bitlife/index.html';">
         <div
           style="
             width: 100%;
@@ -691,7 +691,7 @@
       </div>
 
       <!-- box 18 -->
-      <div class="box" onclick="location.href='ovo/game.html';">
+      <div class="box" onclick="location.href='ovo/index.html';">
         <div
           style="
             width: 100%;
@@ -706,7 +706,10 @@
       </div>
 
       <!-- box 19 -->
-      <div class="box" onclick="location.href='worlds-hardest-game/game.html';">
+      <div
+        class="box"
+        onclick="location.href='worlds-hardest-game/index.html';"
+      >
         <div
           style="
             width: 100%;
@@ -727,7 +730,7 @@
       </div>
 
       <!-- box 20 happy!! -->
-      <div class="box" onclick="location.href='fnaf/game.html';">
+      <div class="box" onclick="location.href='fnaf/index.html';">
         <div
           style="
             width: 100%;
@@ -747,7 +750,7 @@
         <div class="name">Fnaf</div>
       </div>
       <!-- box 21  -->
-      <div class="box" onclick="location.href='stack/game.html';">
+      <div class="box" onclick="location.href='stack/index.html';">
         <div
           style="
             width: 100%;
@@ -769,21 +772,8 @@
       </div>
 
       <!-- box 22  -->
-      <div class="box" onclick="location.href='super-mario-64/game.html';">
-        <div
-          style="
-            width: 100%;
-            height: 80%;
-            border-radius: 15px 15px 0 0;
-            background-image: url('super-mario-64/super-mario-64.png');
-            background-size: cover;
-            background-position: center;
-          "
-        ></div>
-        <div class="name">Super Mario 64 (might work)</div>
-      </div>
 
-      <div class="box" onclick="location.href='tetris/game.html';">
+      <div class="box" onclick="location.href='tetris/index.html';">
         <div
           style="
             width: 100%;

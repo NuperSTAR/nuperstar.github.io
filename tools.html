@@ -22,11 +22,15 @@
         align-items: center;
         border-radius: 50px;
         position: fixed;
-        width: 100%;
+        width: calc(100% - 40px); /* Adjust for padding */
         top: 0;
+        left: 0;
+        right: 0;
+        margin: 10px;
         z-index: 100;
-        box-sizing: border-box; /* Ensures padding doesn't affect width */
+        box-sizing: border-box;
         backdrop-filter: blur(10px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), 0 4px 10px rgba(0, 0, 0, 0.2);
       }
 
       .iconimage {
@@ -52,10 +56,10 @@
       .navbar a {
         color: white;
         text-decoration: none;
-        margin-left: 20px;
-        padding: 5px 10px;
+        padding: 8px 16px;
+        border-radius: 20px;
         transition: background-color 0.3s;
-        white-space: nowrap; /* Prevent text wrapping */
+        white-space: nowrap;
       }
 
       .navbar a:hover {
@@ -216,21 +220,12 @@
         <a href="index.html">Home</a>
         <a href="stuff.html">Stuff</a>
         <a href="tools.html">Tools</a>
-        <a href="aichat.html">AI Chat</a>
+        <a href="aichat.html">AI</a>
         <a href="troubleshooting.html">Troubleshooting</a>
       </div>
     </div>
     <div class="content">
-
-              <head>
-          <script
-            async
-            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1921814372873360"
-            crossorigin="anonymous"
-          ></script>
-        </head> 
-      
-      <div class="box" onclick="location.href='calculator/math.html';">
+      <div class="box" onclick="location.href='calculator/index.html';">
         <div
           style="
             width: 100%;

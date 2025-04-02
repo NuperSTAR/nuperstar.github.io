@@ -1,178 +1,255 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="icon" type="image/x-icon" href="icon.ico" />
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
     <title>NuperSITE - AI Chat</title>
+    <link rel="icon" type="image/x-icon" href="icon.ico" />
+    <!-- Google Font -->
     <link
       href="https://fonts.googleapis.com/css2?family=Lexend&display=swap"
       rel="stylesheet"
     />
+    <!-- Highlight.js CSS (Atom One Dark theme) -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css"
+    />
     <style>
-      /* Previous styles remain the same */
+      /* CSS Variables for easier theming */
+      :root {
+        --background-color: #1b1b1b;
+        --foreground-color: #fff;
+        --header-bg: rgba(31, 31, 31, 0.3);
+        --chat-bg: #222;
+        --input-bg: #333;
+        --user-msg-bg: #444;
+        --ai-msg-bg: #2c2c2c;
+        --button-bg: #555;
+        --button-hover-bg: #666;
+        --code-block-bg: #2d2d2d;
+        --scrollbar-track: #1b1b1b;
+        --scrollbar-thumb: #444;
+        --scrollbar-thumb-hover: #555;
+      }
+
+      /* Global Styles */
+      * {
+        box-sizing: border-box;
+      }
+
       body {
         cursor: url("cursor.png"), default;
         font-family: "Lexend", sans-serif;
         margin: 0;
         padding: 0;
-        background-color: #1b1b1bff;
-        color: white;
+        background-color: var(--background-color);
+        color: var(--foreground-color);
         min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
       }
 
-      .header {
-        background-color: rgba(68, 68, 68, 0.2);
+      /* Header and Navigation */
+      header {
+        background-color: var(--header-bg);
         padding: 10px 20px;
         display: flex;
         align-items: center;
         border-radius: 50px;
         position: fixed;
-        width: 100%;
-        top: 0;
+        width: calc(100% - 40px);
+        top: 10px;
+        left: 10px;
+        right: 10px;
         z-index: 100;
-        box-sizing: border-box;
         backdrop-filter: blur(10px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), 0 4px 10px rgba(0, 0, 0, 0.2);
       }
 
-      .header img {
+      header img {
         height: 50px;
+        width: 50px;
         border-radius: 10px;
+        cursor: pointer;
       }
 
-      .header .title {
+      .header-title {
         font-size: 24px;
-        margin-right: 10px;
+        margin-left: 10px;
       }
 
-      .navbar {
+      nav {
         margin-left: auto;
         display: flex;
+        gap: 10px;
       }
 
-      .navbar a {
-        color: white;
+      nav a {
+        color: var(--foreground-color);
         text-decoration: none;
-        margin-left: 20px;
-        padding: 5px 10px;
+        padding: 8px 16px;
+        border-radius: 20px;
         transition: background-color 0.3s;
         white-space: nowrap;
       }
 
-      .navbar a:hover {
+      nav a:hover {
         cursor: url("link.png"), pointer;
-        background-color: #555;
+        background-color: rgba(85, 85, 85, 0.8);
       }
 
-      .content {
+      .switcher,
+      .model-switcher {
+        margin-left: 20px;
         display: flex;
-        flex-direction: column;
-        padding: 80px 0 0 0;
-        height: calc(100vh - 80px);
-      }
-
-      .chat-container {
-        flex-grow: 1;
-        background-color: #222;
-        padding: 20px;
-        overflow-y: auto;
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-      }
-
-      .input-container {
-        background-color: #333;
-        padding: 15px;
-        display: flex;
-        gap: 10px;
         align-items: center;
+        gap: 10px;
       }
 
-      input {
-        flex-grow: 1;
-        padding: 12px;
-        border: none;
-        border-radius: 20px;
-        background-color: #444;
-        color: white;
+      .switcher select,
+      .model-switcher button {
+        padding: 8px 15px;
         font-family: "Lexend", sans-serif;
-        font-size: 16px;
-      }
-
-      button {
-        padding: 12px 25px;
-        background-color: #555;
-        color: white;
+        font-size: 14px;
         border: none;
-        border-radius: 20px;
-        font-family: "Lexend", sans-serif;
-        font-size: 16px;
-        cursor: url("link.png"), pointer;
+        border-radius: 15px;
+        background-color: var(--user-msg-bg);
+        color: var(--foreground-color);
+        cursor: pointer;
         transition: background-color 0.3s;
+        outline: none;
       }
 
-      button:hover {
-        background-color: #666;
+      /* Add this to your CSS */
+      .ai-message strong {
+        font-weight: bold;
+        color: #fff; /* Make bold text more visible */
+        background-color: rgba(255, 255, 255, 0.08); /* Subtle highlight */
+        padding: 0 3px;
+        border-radius: 3px;
       }
 
+      .switcher select:hover,
+      .model-switcher button:hover {
+        background-color: var(--button-hover-bg);
+      }
+
+      .model-switcher .active {
+        background-color: var(--button-hover-bg);
+        cursor: default;
+      }
+
+      /* Main Content */
+      main {
+        flex-grow: 1;
+        padding: 15px 20px 20px;
+        margin-top: 80px;
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 80px); /* Set a specific height */
+        overflow: hidden;
+        transition: margin-top 0.3s ease;
+      }
+
+      /* Enhanced Chat Container */
+      .chat-container {
+        background: linear-gradient(145deg, #232323, #1b1b1b);
+        padding: 20px;
+        gap: 15px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        overflow-y: auto;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+        backdrop-filter: blur(4px);
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+
+        /* Add these properties to ensure scrolling works */
+        max-height: calc(100vh - 180px); /* Adjusted for header + input area */
+        height: 100%;
+        min-height: 300px; /* Minimum height to ensure scrolling is possible */
+      }
+
+      /* Custom Scrollbar for Chat */
+      .chat-container::-webkit-scrollbar {
+        width: 10px;
+      }
+      .chat-container::-webkit-scrollbar-track {
+        background: var(--scrollbar-track);
+        border-radius: 5px;
+      }
+      .chat-container::-webkit-scrollbar-thumb {
+        background: var(--scrollbar-thumb);
+        border-radius: 5px;
+      }
+      .chat-container::-webkit-scrollbar-thumb:hover {
+        background: var(--scrollbar-thumb-hover);
+      }
+
+      /* Message Bubbles */
       .message {
         max-width: 70%;
         padding: 12px 16px;
         border-radius: 20px;
-        animation: fadeIn 0.3s ease-in-out;
+        position: relative;
         word-wrap: break-word;
+        animation: slideUp 0.3s ease-out;
       }
 
       .user-message {
-        background-color: #444;
+        background-color: var(--user-msg-bg);
         margin-left: auto;
         border-bottom-right-radius: 5px;
       }
 
       .ai-message {
-        background-color: #2c2c2c;
+        background-color: var(--ai-msg-bg);
         margin-right: auto;
-        border-bottom-left-radius: 5px;
+        padding-left: 45px;
       }
 
-      .typing-indicator {
+      .ai-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 24px;
+        height: 24px;
         display: flex;
-        gap: 5px;
-        padding: 12px 16px;
-        background-color: #2c2c2c;
-        border-radius: 20px;
-        width: fit-content;
-        margin-right: auto;
-        border-bottom-left-radius: 5px;
+        align-items: center;
+        justify-content: center;
       }
 
-      .typing-dot {
-        width: 8px;
-        height: 8px;
-        background-color: #fff;
-        border-radius: 50%;
-        animation: typing 1.4s infinite;
+      /* Greeting text (no typing effect) */
+      .greeting-text {
+        margin-left: 0;
       }
 
-      .typing-dot:nth-child(2) {
-        animation-delay: 0.2s;
+      /* New Typing Text with Blinking Cursor */
+      .typing-text {
+        font-family: "Lexend", sans-serif;
+        font-size: 16px;
+        display: inline-block;
+        margin-left: 10px;
       }
-      .typing-dot:nth-child(3) {
-        animation-delay: 0.4s;
+      .blinking-cursor {
+        font-weight: bold;
+        animation: blink 1s steps(2, start) infinite;
       }
-
-      @keyframes typing {
-        0%,
-        100% {
-          transform: translateY(0);
-        }
-        50% {
-          transform: translateY(-5px);
+      @keyframes blink {
+        to {
+          visibility: hidden;
         }
       }
 
-      @keyframes fadeIn {
+      @keyframes slideUp {
         from {
           opacity: 0;
           transform: translateY(10px);
@@ -182,50 +259,265 @@
           transform: translateY(0);
         }
       }
+
+      /* Copy Button (appears on hover over AI message) */
+      .copy-button {
+        position: absolute;
+        right: -30px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: var(--foreground-color);
+        padding: 5px;
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .ai-message:hover .copy-button {
+        opacity: 1;
+      }
+
+      /* Improved Code Block Styling */
+      .code-block {
+        background-color: var(--code-block-bg);
+        border-radius: 8px;
+        margin: 8px 0;
+        overflow-x: auto;
+        position: relative;
+        margin-bottom: 1em;
+      }
+      .code-block code {
+        display: block;
+        padding: 12px;
+        color: #e6e6e6;
+        font-family: monospace;
+        white-space: pre;
+      }
+      .code-block-header {
+        background-color: rgba(0, 0, 0, 0.3);
+        padding: 8px 12px;
+        font-size: 14px;
+        color: var(--foreground-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+      }
+      .code-copy-button {
+        background: none;
+        border: none;
+        color: var(--foreground-color);
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      /* Input Container */
+      .input-container {
+        background-color: var(--input-bg);
+        padding: 15px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        border-radius: 10px;
+        margin-bottom: 20px;
+      }
+
+      .input-container input {
+        flex-grow: 1;
+        padding: 12px;
+        border: none;
+        border-radius: 20px;
+        background-color: var(--user-msg-bg);
+        color: var(--foreground-color);
+        font-family: "Lexend", sans-serif;
+        font-size: 16px;
+        outline: none;
+      }
+
+      .input-container button {
+        padding: 12px 25px;
+        background-color: var(--button-bg);
+        color: var(--foreground-color);
+        border: none;
+        border-radius: 20px;
+        font-family: "Lexend", sans-serif;
+        font-size: 16px;
+        cursor: url("link.png"), pointer;
+        transition: background-color 0.3s;
+      }
+
+      .input-container button:hover {
+        background-color: var(--button-hover-bg);
+      }
+
+      /* Settings Icon in Bottom Right Corner */
+      .settings-icon {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 40px;
+        height: 40px;
+        background-color: var(--button-bg);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 200;
+        transition: background-color 0.3s;
+      }
+      .settings-icon:hover {
+        background-color: var(--button-hover-bg);
+      }
+      .settings-icon svg {
+        width: 24px;
+        height: 24px;
+        fill: var(--foreground-color);
+      }
     </style>
   </head>
   <body>
-    <div class="header">
+    <!-- Header with Navigation and Switchers -->
+    <header>
       <img
+        id="headerLogo"
         src="images/icon.png"
-        class="iconimage"
-        alt="Logo"
-        onclick="toggleDropdown()"
+        alt="NuperSITE Logo"
+        title="Toggle Options"
       />
-      <div class="title">⠀NuperSITE</div>
-      <div class="navbar">
+      <div class="header-title">NuperSITE</div>
+
+      <div class="switcher">
+        <select id="pageSwitcher" aria-label="Switch page">
+          <option value="image.html">Image Generation</option>
+          <option value="aichat.html" selected>AI Chat Bot</option>
+        </select>
+      </div>
+
+      <nav>
         <a href="index.html">Home</a>
         <a href="stuff.html">Stuff</a>
         <a href="tools.html">Tools</a>
-        <a href="#">AI Chat</a>
+        <a href="#">AI</a>
         <a href="troubleshooting.html">Troubleshooting</a>
-      </div>
-    </div>
+      </nav>
 
-    <div class="content">
-      <div class="chat-container" id="chatContainer">
-        <div class="message ai-message">hello! what can i help for you?</div>
+      <div class="model-switcher">
+        <button id="nuperAIButton" class="active" aria-pressed="true">
+          NuperAI
+        </button>
+        <button id="geminiButton" aria-pressed="false">Gemini</button>
       </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main>
+      <!-- Chat container that holds messages -->
+      <section class="chat-container" id="chatContainer" aria-live="polite">
+        <!-- Greeting message will be inserted via JavaScript -->
+      </section>
+
+      <!-- Input area for new messages -->
       <div class="input-container">
         <input
           type="text"
           id="promptInput"
           placeholder="Type your message here..."
-          onkeypress="handleKeyPress(event)"
+          aria-label="Type your message"
         />
-        <button onclick="sendMessage()">Send</button>
+        <button id="sendButton">Send</button>
       </div>
+    </main>
+
+    <!-- Settings Icon (toggles header visibility) -->
+    <div class="settings-icon" onclick="toggleHeader()">
+      <!-- Inline SVG gear icon -->
+      <svg viewBox="0 0 24 24">
+        <path
+          d="M19.14,12.94a7.14,7.14,0,0,0,.05-1,7.14,7.14,0,0,0-.05-1l2.11-1.65a.5.5,0,0,0,.12-.65l-2-3.46a.5.5,0,0,0-.61-.22l-2.49,1a7,7,0,0,0-1.73-1L14,2.81a.5.5,0,0,0-.5-.41H10.5A.5.5,0,0,0,10,2.81L9.38,5.09a7,7,0,0,0-1.73,1l-2.49-1a.5.5,0,0,0-.61.22l-2,3.46a.5.5,0,0,0,.12.65L4.86,10a7.14,7.14,0,0,0,0,2l-2.11,1.65a.5.5,0,0,0-.12.65l2,3.46a.5.5,0,0,0,.61.22l2.49-1a7,7,0,0,0,1.73,1L10,21.19a.5.5,0,0,0,.5.41h3a.5.5,0,0,0,.5-.41l.62-2.28a7,7,0,0,0,1.73-1l2.49,1a.5.5,0,0,0,.61-.22l2-3.46a.5.5,0,0,0-.12-.65ZM12,15.5A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z"
+        ></path>
+      </svg>
     </div>
 
+    <!-- Highlight.js Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+
+    <!-- JavaScript -->
     <script>
-      // Initialize conversation history
       let conversationHistory = [];
+      let currentModel = "NuperAI"; // Default model
+      let messageCount = 0; // Track number of user messages
+
+      function checkMessageCount() {
+        messageCount++;
+        if (messageCount > 100) {
+          console.log("Ok bye, also stop spamming.");
+        } else if (messageCount > 50) {
+          console.log("Ok, guess then you waste you life here.");
+        } else if (messageCount > 25) {
+          console.log(
+            "Instead of chatting to a non mindless bot, chance to see anything else?"
+          );
+        } else if (messageCount > 15) {
+          console.log("You might be enjoying the bot.");
+        } else if (messageCount > 5) {
+          console.log(
+            "Hey, so uh, I see you're liking the bot. Chance to see anything else..?"
+          );
+        }
+      }
+
+      function getAIIconHTML() {
+        if (currentModel === "NuperAI") {
+          return '<span style="display:inline-block; width: 24px; height: 24px; background-color: #fff; border-radius:50%;"></span>';
+        } else if (currentModel === "Gemini") {
+          return '<img src="svgs/gemini-color.svg" alt="Gemini Icon" style="width: 24px; height: 24px;" />';
+        }
+        return "";
+      }
+
+      function getGreetingText() {
+        return currentModel === "NuperAI"
+          ? "hello! how can i help you?"
+          : "Hello! 👋 How can I help you today? 😊";
+      }
+
+      function addGreetingMessage(text) {
+        const chatContainer = document.getElementById("chatContainer");
+        const greetingDiv = document.createElement("div");
+        greetingDiv.className = "message ai-message greeting-message";
+
+        const aiIconDiv = document.createElement("div");
+        aiIconDiv.className = "ai-icon";
+        aiIconDiv.innerHTML = getAIIconHTML();
+        greetingDiv.appendChild(aiIconDiv);
+
+        const greetingSpan = document.createElement("span");
+        greetingSpan.className = "greeting-text";
+        greetingSpan.textContent = text;
+        greetingDiv.appendChild(greetingSpan);
+
+        const copyButton = document.createElement("button");
+        copyButton.className = "copy-button";
+        copyButton.title = "Copy message";
+        copyButton.innerHTML = '<i class="fas fa-copy"></i>';
+        copyButton.addEventListener("click", () => copyMessage(copyButton));
+        greetingDiv.appendChild(copyButton);
+
+        chatContainer.appendChild(greetingDiv);
+      }
+
+      function clearChatContainer() {
+        document.getElementById("chatContainer").innerHTML = "";
+      }
 
       async function sendMessage() {
         const input = document.getElementById("promptInput");
         const chatContainer = document.getElementById("chatContainer");
         const message = input.value.trim();
-
         if (!message) return;
 
         // Add user message to UI
@@ -234,80 +526,265 @@
         userDiv.textContent = message;
         chatContainer.appendChild(userDiv);
 
-        // Add user message to history
+        // Add user message to conversation history
         conversationHistory.push({ role: "user", content: message });
-
-        // Clear input
+        checkMessageCount();
         input.value = "";
+        scrollToBottom();
 
-        // Add typing indicator
-        const typingDiv = document.createElement("div");
-        typingDiv.className = "typing-indicator";
-        typingDiv.innerHTML =
-          '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
-        chatContainer.appendChild(typingDiv);
+        // Create AI message container for the response
+        const aiDiv = document.createElement("div");
+        aiDiv.className = "message ai-message";
 
-        // Scroll to bottom
-        chatContainer.scrollTop = chatContainer.scrollHeight;
+        // Add the AI icon
+        const aiIcon = document.createElement("div");
+        aiIcon.className = "ai-icon";
+        aiIcon.innerHTML = getAIIconHTML();
+        aiDiv.appendChild(aiIcon);
+
+        // Create an element for streamed text
+        const textSpan = document.createElement("span");
+        textSpan.className = "streamed-text";
+        aiDiv.appendChild(textSpan);
+
+        // Create the typing indicator as a text with blinking cursor
+        const typingIndicator = document.createElement("div");
+        typingIndicator.className = "typing-text";
+        typingIndicator.innerHTML = '<span class="blinking-cursor">|</span>';
+        aiDiv.appendChild(typingIndicator);
+
+        // Add copy button for the AI message
+        const copyButton = document.createElement("button");
+        copyButton.className = "copy-button";
+        copyButton.innerHTML = '<i class="fas fa-copy"></i>';
+        copyButton.title = "Copy message";
+        copyButton.addEventListener("click", () => copyMessage(copyButton));
+        aiDiv.appendChild(copyButton);
+
+        chatContainer.appendChild(aiDiv);
+        scrollToBottom();
 
         try {
-          // Send request with conversation history
-          const res = await fetch(
-            `https://chatbot.nupersite.org/?prompt=${encodeURIComponent(
-              message
-            )}&history=${encodeURIComponent(
-              JSON.stringify(conversationHistory)
-            )}`
-          );
+          const apiUrl =
+            currentModel === "NuperAI"
+              ? `https://plain-frog-a63f.leandrovasquez1.workers.dev/?prompt=${encodeURIComponent(
+                  message
+                )}&history=${encodeURIComponent(
+                  JSON.stringify(conversationHistory)
+                )}`
+              : `https://geminiai.nupersite.org/?prompt=${encodeURIComponent(
+                  message
+                )}&history=${encodeURIComponent(
+                  JSON.stringify(conversationHistory)
+                )}`;
 
-          if (!res.ok) {
-            throw new Error("Failed to fetch response");
+          const response = await fetch(apiUrl);
+          if (!response.ok) throw new Error("Failed to fetch response");
+
+          const reader = response.body.getReader();
+          const decoder = new TextDecoder();
+          let fullResponse = "";
+
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            const chunk = decoder.decode(value);
+            fullResponse += chunk;
+
+            // Update the streamed text with formatted code blocks AND bold text
+            const formattedText = formatResponseWithCodeBlocks(fullResponse);
+            textSpan.innerHTML = formatAIText(formattedText);
+
+            // Re-run Highlight.js on any new code blocks
+            document.querySelectorAll(".code-block code").forEach((block) => {
+              hljs.highlightElement(block);
+            });
+            scrollToBottom();
           }
 
-          const text = await res.text();
-
-          // Remove typing indicator
-          chatContainer.removeChild(typingDiv);
-
-          // Add AI response to UI
-          const aiDiv = document.createElement("div");
-          aiDiv.className = "message ai-message";
-          aiDiv.textContent = text;
-          chatContainer.appendChild(aiDiv);
-
-          // Add AI response to history
-          conversationHistory.push({ role: "assistant", content: text });
+          // Save the AI response to conversation history
+          conversationHistory.push({
+            role: "assistant",
+            content: fullResponse,
+          });
+          // Remove the typing indicator now that the message is complete
+          typingIndicator.remove();
         } catch (error) {
-          // Remove typing indicator
-          chatContainer.removeChild(typingDiv);
-
-          // Add error message
-          const errorDiv = document.createElement("div");
-          errorDiv.className = "message ai-message";
-          errorDiv.textContent = `Error: ${error.message}`;
-          chatContainer.appendChild(errorDiv);
+          aiDiv.textContent = `Error: ${error.message}`;
         }
-
-        // Scroll to bottom again after adding response
-        chatContainer.scrollTop = chatContainer.scrollHeight;
+        scrollToBottom();
       }
 
-      function handleKeyPress(event) {
-        if (event.key === "Enter") {
-          sendMessage();
-        }
+      // Add this function to format AI text with markdown-style formatting
+      function formatAIText(text) {
+        // Bold text: Replace **text** with <strong>text</strong>
+        return text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
       }
 
-      function toggleDropdown() {
-        var dropdown = document.getElementById("dropdownMenu");
-        if (dropdown.style.visibility === "visible") {
-          dropdown.style.visibility = "hidden";
-          dropdown.style.opacity = 0;
+      // Formats code blocks wrapped with triple backticks (```)
+      // Update the formatResponseWithCodeBlocks function
+      function formatResponseWithCodeBlocks(text) {
+        const parts = text.split("```");
+        return parts
+          .map((part, index) => {
+            if (index % 2 === 0) {
+              // This is regular text (not code), so we can keep bold formatting
+              return part;
+            } else {
+              // This is code, process as before
+              let code = part.trim();
+              let language = "";
+              const firstLineBreak = code.indexOf("\n");
+              if (firstLineBreak !== -1) {
+                const possibleLanguage = code
+                  .substring(0, firstLineBreak)
+                  .trim();
+                if (
+                  [
+                    "html",
+                    "css",
+                    "javascript",
+                    "js",
+                    "python" /* other languages */,
+                  ].includes(possibleLanguage.toLowerCase())
+                ) {
+                  language = possibleLanguage;
+                  code = code.substring(firstLineBreak).trim();
+                }
+              }
+              const headerHtml = `<div class="code-block-header">
+          <span class="code-language">${
+            language ? language.toUpperCase() + " Code" : "Code"
+          }</span>
+          <button class="code-copy-button" onclick="copyCodeBlock(this)">Copy</button>
+        </div>`;
+              return `<div class="code-block">
+          ${headerHtml}
+          <code>${escapeHtml(code)}</code>
+        </div>`;
+            }
+          })
+          .join("");
+      }
+
+      // Escape HTML characters to prevent XSS
+      function escapeHtml(text) {
+        const div = document.createElement("div");
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      // Copies the content of a code block when its copy button is clicked.
+      function copyCodeBlock(button) {
+        const codeElement = button.parentElement.nextElementSibling;
+        const codeText = codeElement.innerText;
+        navigator.clipboard
+          .writeText(codeText)
+          .then(() => {
+            button.textContent = "Copied!";
+            setTimeout(() => {
+              button.textContent = "Copy";
+            }, 1500);
+          })
+          .catch((err) => console.error("Failed to copy code: ", err));
+      }
+
+      // Replace the existing scrollToBottom function with this one
+      function scrollToBottom() {
+        const chatContainer = document.getElementById("chatContainer");
+
+        // Force layout recalculation to get the correct scrollHeight
+        const scrollHeight = chatContainer.scrollHeight;
+
+        // Scroll to bottom
+        chatContainer.scrollTop = scrollHeight;
+      }
+
+      function copyMessage(button) {
+        const messageDiv = button.parentElement;
+        const textToCopy = messageDiv.textContent.trim();
+        navigator.clipboard
+          .writeText(textToCopy)
+          .then(() => {
+            button.innerHTML = '<i class="fas fa-check"></i>';
+            setTimeout(() => {
+              button.innerHTML = '<i class="fas fa-copy"></i>';
+            }, 1500);
+          })
+          .catch((err) => console.error("Failed to copy text: ", err));
+      }
+
+      function switchPage() {
+        const switcher = document.getElementById("pageSwitcher");
+        window.location.href = switcher.value;
+      }
+
+      // Updates the current model and resets the chat history if needed.
+      function switchModel(model) {
+        currentModel = model;
+        const nuperAIButton = document.getElementById("nuperAIButton");
+        const geminiButton = document.getElementById("geminiButton");
+
+        nuperAIButton.classList.remove("active");
+        geminiButton.classList.remove("active");
+        nuperAIButton.setAttribute("aria-pressed", "false");
+        geminiButton.setAttribute("aria-pressed", "false");
+
+        if (model === "NuperAI") {
+          nuperAIButton.classList.add("active");
+          nuperAIButton.setAttribute("aria-pressed", "true");
+          clearChatContainer();
+          conversationHistory = [];
+          messageCount = 0;
         } else {
-          dropdown.style.visibility = "visible";
-          dropdown.style.opacity = 1;
+          geminiButton.classList.add("active");
+          geminiButton.setAttribute("aria-pressed", "true");
+          clearChatContainer();
+          conversationHistory = [];
+          messageCount = 0;
+          alert(
+            "Gemini now supports conversation history. After long of fixing, now it does have history! Past messages has been cleared."
+          );
+        }
+        addGreetingMessage(getGreetingText());
+      }
+
+      // Toggle header visibility and adjust main margin accordingly.
+      function toggleHeader() {
+        const header = document.querySelector("header");
+        const main = document.querySelector("main");
+        if (header.style.display === "none") {
+          header.style.display = "flex";
+          main.style.marginTop = "80px";
+        } else {
+          header.style.display = "none";
+          main.style.marginTop = "10px";
         }
       }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        addGreetingMessage(getGreetingText());
+        document
+          .getElementById("sendButton")
+          .addEventListener("click", sendMessage);
+        document
+          .getElementById("promptInput")
+          .addEventListener("keypress", (e) => {
+            if (e.key === "Enter") sendMessage();
+          });
+        document
+          .getElementById("pageSwitcher")
+          .addEventListener("change", switchPage);
+        document
+          .getElementById("nuperAIButton")
+          .addEventListener("click", () => switchModel("NuperAI"));
+        document
+          .getElementById("geminiButton")
+          .addEventListener("click", () => switchModel("Gemini"));
+        document
+          .getElementById("headerLogo")
+          .addEventListener("click", () => console.log("Toggle dropdown"));
+      });
     </script>
   </body>
 </html>

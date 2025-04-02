@@ -26,11 +26,15 @@
         align-items: center;
         border-radius: 50px;
         position: fixed;
-        width: 100%;
+        width: calc(100% - 40px); /* Adjust for padding */
         top: 0;
+        left: 0;
+        right: 0;
+        margin: 10px;
         z-index: 100;
         box-sizing: border-box;
         backdrop-filter: blur(10px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), 0 4px 10px rgba(0, 0, 0, 0.2);
       }
 
       .navbar {
@@ -42,8 +46,8 @@
       .navbar a {
         color: white;
         text-decoration: none;
-        margin-left: 20px;
-        padding: 5px 10px;
+        padding: 8px 16px;
+        border-radius: 20px;
         transition: background-color 0.3s;
         white-space: nowrap;
       }
@@ -184,7 +188,7 @@
         <a href="index.html">Home</a>
         <a href="stuff.html">Stuff</a>
         <a href="tools.html">Tools</a>
-        <a href="aichat.html">AI Chat</a>
+        <a href="aichat.html">AI</a>
         <a href="troubleshooting.html">Troubleshooting</a>
       </div>
 

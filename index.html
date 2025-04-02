@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NuperSITE - Home</title>
     <style>
+      /* Existing styles ... */
       body {
         font-family: "Lexend", sans-serif;
         margin: 0;
@@ -13,8 +14,53 @@
         background-color: #1b1b1bff;
         color: white;
         cursor: url("cursor.png"), default;
+        transition: transform 1s;
+      }
+      /* Flip animation class: rotates the page horizontally */
+      .flip-screen {
+        transform: rotateY(180deg);
       }
 
+      /* Styles for the gift element */
+      #gift {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100px;
+        height: 100px;
+        /* Updated to use the desired gif */
+        background-image: url("/images/giphy.gif");
+        background-size: contain;
+        background-repeat: no-repeat;
+        display: none;
+        z-index: 10000;
+        animation: moveAround 5s linear infinite;
+      }
+
+      @keyframes moveAround {
+        0% {
+          top: 0;
+          left: 0;
+        }
+        25% {
+          top: 0;
+          left: calc(100% - 100px);
+        }
+        50% {
+          top: calc(100% - 100px);
+          left: calc(100% - 100px);
+        }
+        75% {
+          top: calc(100% - 100px);
+          left: 0;
+        }
+        100% {
+          top: 0;
+          left: 0;
+        }
+      }
+
+      /* (Keep your existing CSS below...) */
       .middle {
         text-align: center;
       }
@@ -25,32 +71,36 @@
       }
 
       .header {
-        background-color: rgba(68, 68, 68, 0.2);
+        background-color: rgba(31, 31, 31, 0.3);
         padding: 10px 20px;
         display: flex;
         align-items: center;
         border-radius: 50px;
         position: fixed;
-        width: 100%;
+        width: calc(100% - 40px);
         top: 0;
+        left: 0;
+        right: 0;
+        margin: 10px;
         z-index: 100;
-        box-sizing: border-box; /* Ensures padding doesn't affect width */
-        backdrop-filter: blur(10px);
+        box-sizing: border-box;
+        backdrop-filter: blur(15px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), 0 4px 10px rgba(0, 0, 0, 0.2);
       }
 
       .navbar {
         margin-left: auto;
         display: flex;
-        justify-content: flex-end; /* Ensures links stay to the right */
+        justify-content: flex-end;
       }
 
       .navbar a {
         color: white;
         text-decoration: none;
-        margin-left: 20px;
-        padding: 5px 10px;
+        padding: 8px 16px;
+        border-radius: 20px;
         transition: background-color 0.3s;
-        white-space: nowrap; /* Prevent text wrapping */
+        white-space: nowrap;
       }
 
       .iconimage {
@@ -63,6 +113,7 @@
 
       .header .title {
         font-size: 24px;
+        margin-left: 10px;
         margin-right: 10px;
       }
 
@@ -84,7 +135,6 @@
         padding: 20px;
         width: 300px;
         backdrop-filter: blur(5px);
-        /* Apply blur to the dropdown background */
       }
 
       .dropdown a {
@@ -102,7 +152,6 @@
 
       body.blurred {
         filter: blur(10px);
-        /* Apply blur to the background when dropdown is open */
       }
 
       .box {
@@ -146,16 +195,16 @@
         from {
           transform: rotate(0deg);
         }
-
         to {
           transform: rotate(360deg);
         }
       }
 
       #spinImage {
-        animation: spin infinite 0.01s linear;
+        animation: spin infinite 0.5s linear;
         display: block;
         margin: 20px auto;
+        border-radius: 50px;
       }
 
       footer {
@@ -180,7 +229,7 @@
       .redfooter {
         text-align: center;
         padding: 20px;
-        background-color: red; /* Red background */
+        background-color: red;
         margin-top: 40px;
         border-radius: 20px;
       }
@@ -261,19 +310,15 @@
         0% {
           transform: translateX(-5px);
         }
-
         25% {
           transform: translateX(5px);
         }
-
         50% {
           transform: translateX(-5px);
         }
-
         75% {
           transform: translateX(5px);
         }
-
         100% {
           transform: translateX(0);
         }
@@ -282,15 +327,133 @@
       .incorrect-code {
         animation: twitch 0.2s ease-in-out;
       }
-    </style>
 
+      #challengeOverlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0);
+        z-index: 9999;
+        opacity: 0;
+        transition: background-color 1s ease, opacity 1s ease;
+      }
+
+      #challengeOverlay.visible {
+        display: block;
+        background-color: rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(15px);
+        opacity: 1;
+      }
+
+      #challengeContent {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        width: 80%;
+        max-width: 500px;
+      }
+
+      @keyframes popIn {
+        0% {
+          transform: scale(0);
+          opacity: 0;
+        }
+        50% {
+          transform: scale(1.2);
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      #challengeImage {
+        width: 200px;
+        height: 200px;
+        margin-bottom: 20px;
+        opacity: 0;
+        transform: scale(0);
+        transition: transform 0.2s ease;
+      }
+
+      #challengeImage:active {
+        transform: scale(0.95);
+      }
+
+      #challengeOverlay.visible #challengeImage {
+        animation: popIn 0.5s ease forwards;
+        animation-delay: 0.3s;
+      }
+
+      #challengeContent h2,
+      #clickCounter,
+      #timer {
+        opacity: 0;
+        transform: scale(0);
+      }
+
+      #challengeOverlay.visible h2 {
+        animation: popIn 0.8s ease forwards;
+        animation-delay: 0.6s;
+      }
+
+      #challengeOverlay.visible #clickCounter {
+        animation: popIn 0.8s ease forwards;
+        animation-delay: 0.9s;
+      }
+
+      #challengeOverlay.visible #timer {
+        animation: popIn 0.8s ease forwards;
+        animation-delay: 1.2s;
+      }
+
+      #clickCounter {
+        font-size: 24px;
+        margin: 20px 0;
+      }
+
+      #timer {
+        font-size: 20px;
+        color: #ff4444;
+        margin: 10px 0;
+      }
+
+      @keyframes clickPop {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(0.9);
+        }
+        75% {
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .click-animate {
+        animation: clickPop 0.3s ease-in-out;
+      }
+    </style>
     <link
       href="https://fonts.googleapis.com/css2?family=Lexend&display=swap"
       rel="stylesheet"
     />
   </head>
-
   <body>
+    <!-- Hidden audio element for the flip feature -->
+    <audio id="flipMusic" src="music.mp3"></audio>
+
+    <!-- Hidden gift element -->
+    <div id="gift"></div>
+
     <div class="header">
       <div style="position: relative">
         <img
@@ -305,8 +468,17 @@
         <a href="index.html">Home</a>
         <a href="stuff.html">Stuff</a>
         <a href="tools.html">Tools</a>
-        <a href="aichat.html">AI Chat</a>
+        <a href="aichat.html">AI</a>
         <a href="troubleshooting.html">Troubleshooting</a>
+      </div>
+    </div>
+
+    <div id="challengeOverlay">
+      <div id="challengeContent">
+        <img id="challengeImage" src="images/face.png" alt="Challenge Image" />
+        <h2>WHAT? HELP ME!</h2>
+        <div id="clickCounter">Clicks: 0/230</div>
+        <div id="timer">Time left: 50s</div>
       </div>
     </div>
 
@@ -320,66 +492,67 @@
       <p>Attempts left: <span id="attempts">10</span></p>
     </div>
 
-    <div class="content" style="padding: 65px">
-
-      <footer class="redfooter">
-        <p>
-          We have moved links! The links are
-          <a href="https://nupersite.org">nupersite.org </a> or
-          <a href="https://nuper.site">nuper.site.</a> every site will still be
-          up to date.
-        </p>
-      </footer>
-
+    <div class="content" style="padding: 80px">
       <h1 class="middle">Hello!</h1>
-      <p class="middle">
-        Hi! This is a game website, although not because there is educational
-        stuff! (check out tools)
-      </p>
+      <p class="middle">Hi! Welcome to my website! Hope you enjoy!</p>
       <p class="middle">Check out the "Stuff" tab for stuff you might like!</p>
       <p class="middle">More stuff will be in the stuff tab, soon.</p>
-      <p class="middle">Please dont mind my spinning logo. Its very fast.</p>
-      <p class="middle">Made in Herrera, made out of the oven.</p>
+      <p class="middle">
+        Check out the AI tab! Why make AI free? Because why not!
+      </p>
+      <p class="middle">Logo? Slowing spinning!</p>
       <img id="spinImage" src="images/icon.png" alt="Logo" />
     </div>
     <div class="box" onclick="crash()">
       <div class="name">never click me</div>
+    </div>
+
+    <div class="box" onclick="cloakPage()">
+      <div class="name">cloak page</div>
     </div>
   </body>
 
   <footer>
     <p>
       Any questions? Please email me at
-      <a href="mailto:nupersoavez@gmail.com">nupersoavez@gmail.com</a>
+      <a href="mailto:support@nupersite.org">support@nupersite.org</a>
     </p>
   </footer>
 
   <div class="updates">
-    <h1 class="middle">Updates | Last Updated: Dec 17 7:45 CST</h1>
+    <h1 class="middle">Updates | Last Updated: April 1st at 7:05 CST</h1>
     <p>
-      NEW PAGE! AI Chat Bot! Intregrated on to NuperSITE, helping with your
-      work, and stuff! The ai doesnt learn about NuperSITE or anything, AI is
-      also still learning.
+      April fools! A unexpected time for me to release this update! MASSIVE
+      upgrades around here
+    </p>
+    <p>New design for the header!</p>
+    <p>
+      Added each of its down designed htmls in all of the games! You can see
+      what do made the game, and whats the controls.
     </p>
     <p>
-      Added links box! You can see how many NuperSITE links that are offical and
-      work!
+      AI Chat had a upgrade! You can switch models, such as Gemini and NuperAI!
+      Such as live typing.
     </p>
     <p>
-      Replaced the Videos tab for the Ai Chat Bot, the Videos html will still be
-      up, until Chirstmas Day will be deleted.
+      Two new AI features! Image generation, and AI Chat! Image generation may
+      not be accurate.
     </p>
     <p>
-      Search bar customization added! Can seperated by Downloadable items and
-      All items, and fixed the search bar position.
+      Image generation now has improve response check box! Simplifes your
+      response to make it better, and concise to the AI. Planning to add it to
+      AI Chat..
     </p>
+    <p>Two new easter eggs! Or I think three.</p>
+    <p>Slope, is now fixed! Have fun :)</p>
+    <p>Whole of yadda yadda, and sqaush some bugs.</p>
   </div>
 
   <div class="updates">
     <h1 class="middle">Links</h1>
     <p>
       Some links won't work, it's nice to have some links around. <br />
-      <span>nuper.site is quicker, but nupersite.org is much famous.</span>
+      <span>nuper.site is quicker, but nupersite.org is much used.</span>
     </p>
     <a class="whitehyperlink" href="https://nupersite.org">nupersite.org</a>
     <br />
@@ -388,35 +561,95 @@
 
     <br />
 
-    <a class="whitehyperlink" href="https://nupersite.bitbucket.io"
-      >nupersite.bitbucket.io</a
+    <a class="whitehyperlink" href="https://nupersite.netlify.app"
+      >nupersite.netlify.app</a
     >
+
     <br />
-    <a class="whitehyperlink" href="https://c2g9vy-5000.csb.app/"
+
+    <a class="whitehyperlink" href="https://nupersitedev.xyz"
       >development link</a
     >
 
     <h1>Old links</h1>
-    <p>Forgotton links that were never used, but functional. <br /></p>
+    <p>Forgotten links that were never used, but functional. <br /></p>
     <br />
     <a class="whitehyperlink" href="https://readhistoryweatherdocs.netlify.app"
       >readhistoryweatherdocs.netlify.app</a
     >
+
+    <h1>Discontinued links</h1>
+    <p>Links that are discontinued, no longer updating.<br /></p>
+
+    <a class="whitehyperlink" href="https://nupersite.bitbucket.io"
+      >nupersite.bitbucket.io</a
+    >
+    <br />
+
+    <h1>Status Page</h1>
+    <p>
+      Check to see if our website is down, or up! Chatbot and Image Generation
+      API are also included.<br />
+    </p>
+
+    <a class="whitehyperlink" href="https://status.nupersite.org"
+      >status.nupersite.org</a
+    >
+
+    <h1>LITE Version</h1>
+    <p>A lighter build of NuperSITE! Uses JPEG images instead of PNGS.<br /></p>
+
+    <a class="whitehyperlink" href="https://litenupersite.net"
+      >litenupersite.net</a
+    >
+  </div>
+  <div class="updates">
+    <h1 class="middle">AI Chatbot Terms/Image Generation</h1>
+    <p>By using the AI, you agree to the following terms:</p>
+
+    <h2>1. Purpose of AI</h2>
+    <p>
+      The NuperSITE AI targets to help users with anything, such as helping,
+      educating, and more.
+    </p>
+
+    <h2>2. User Responsibility</h2>
+    <p>
+      Users have to respect the AI without engaging in harmful behavior towards
+      the chatbot.
+    </p>
+
+    <h2>3. Privacy</h2>
+    <p>
+      No data is collected to improve the chatbot, nor is it sold. The
+      improvement of the chatbot will only focus on making the AI learn better.
+    </p>
+
+    <h2>4. Limitations</h2>
+    <p>
+      While AI chatbots may occasionally provide inaccurate responses, NuperAI
+      offers more precise and reliable answers to better assist you.
+    </p>
+
+    <h2>5. Unexpected Changes to Terms</h2>
+    <p>
+      NuperSITE has the right to update these terms at any time. Users can check
+      this container for any updates.
+    </p>
   </div>
 
-  <footer>
-    <p>
-      Also, to find the source code of NuperSITE, check Github and search for
-      "NuperSITE" by NuperSITE organization.
-    </p>
-  </footer>
-
   <script>
-    // Initialize attempts counter
+    // Initialize attempts counter and challenge variables
+    let hasBeenSaved = false;
     var attemptsLeft = 10;
+    let clickCount = 0;
+    let timeLeft = 60;
+    let timerInterval;
+
+    console.log("Hello there my little friend, peeking in my code?");
 
     document.addEventListener("keydown", function (event) {
-      // Check if the pressed key is '1'
+      // When key '1' is pressed, show the hidden code div
       if (event.key === "1") {
         var hiddenDiv = document.getElementById("hiddenDiv");
         hiddenDiv.style.display = "block";
@@ -425,25 +658,18 @@
 
     // Add event listener to submit button
     document.getElementById("submitBtn").addEventListener("click", function () {
-      // Get the input value
       var code = document.getElementById("inputField").value.trim();
-      // Check if the code is correct
       if (code === "Nova") {
-        // Replace "1234" with your correct code
-        crash();
+        window.location.replace("/digsite/dig.html");
       } else {
-        // Add the incorrect-code class to the input field to trigger the twitching animation
         document.getElementById("inputField").classList.add("incorrect-code");
-        // Remove the class after the animation completes to allow for multiple attempts
         setTimeout(function () {
           document
             .getElementById("inputField")
             .classList.remove("incorrect-code");
         }, 200);
-        // Decrement attempts counter
         attemptsLeft--;
         document.getElementById("attempts").textContent = attemptsLeft;
-        // Gray out the input field if attempts run out
         if (attemptsLeft === 0) {
           crash();
         }
@@ -456,12 +682,146 @@
       }
     });
 
+    // NEW: When key "0" is pressed, flip the screen, play music,
+    // hide all other elements, and show a moving GIF window.
+    // Preload the GIF so it is cached before any windows open.
+    // Preload the GIF so it's cached before any windows open.
+    const preloadedGif = new Image();
+    preloadedGif.src = "/images/giphy.gif";
+
+    // Listen for keydown events.
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "0") {
+        // 1. Flip the main window (assumes a CSS class 'flip-screen' is defined).
+        document.body.classList.add("flip-screen");
+
+        // 2. Play music (requires an audio element with ID "flipMusic" to be present in the DOM).
+        document.getElementById("flipMusic").play();
+
+        // 3. Hide all visible content from the main document (except the audio element).
+        Array.from(document.body.children).forEach((child) => {
+          if (child.id !== "flipMusic") {
+            child.style.display = "none";
+          }
+        });
+
+        // 4. Open a new window that displays the GIF.
+        let giftWindow = window.open(
+          "",
+          "gifWindow",
+          "width=150,height=150,left=0,top=0"
+        );
+        giftWindow.document.write(`
+      <html>
+        <head>
+          <title>GIF Window</title>
+          <style>
+            body { 
+              margin: 0; 
+              background: transparent; 
+              overflow: hidden; 
+            }
+            img { 
+              width: 100%; 
+              height: 100%; 
+            }
+          </style>
+        </head>
+        <body>
+          <img src="/images/giphy.gif" alt="gif">
+        </body>
+      </html>
+    `);
+        giftWindow.document.close();
+
+        // 5. Always bring the giftWindow to the front (attempt to keep it on top).
+        let focusInterval = setInterval(function () {
+          try {
+            giftWindow.focus();
+          } catch (e) {
+            console.error(e);
+          }
+        }, 500);
+
+        // 6. Set an interval to randomly move the gift window around the screen.
+        let moveInterval = setInterval(function () {
+          let randomX = Math.floor(Math.random() * (screen.availWidth - 150));
+          let randomY = Math.floor(Math.random() * (screen.availHeight - 150));
+          try {
+            giftWindow.moveTo(randomX, randomY);
+          } catch (e) {
+            console.error(e);
+          }
+        }, 1000);
+
+        // 7. Duplicate the window every 500 milliseconds.
+        let duplicateInterval = setInterval(function () {
+          let dupWindow = window.open(
+            "",
+            "",
+            "width=150,height=150,left=0,top=0"
+          );
+          dupWindow.document.write(`
+        <html>
+          <head>
+            <title>lol</title>
+            <style>
+              body { 
+                margin: 0; 
+                background: transparent; 
+                overflow: hidden; 
+              }
+              img { 
+                width: 100%; 
+                height: 100%; 
+              }
+            </style>
+          </head>
+          <body>
+            <img src="/images/giphy.gif" alt="gif">
+          </body>
+        </html>
+      `);
+          dupWindow.document.close();
+
+          // Move the duplicate window randomly.
+          let dupMoveInterval = setInterval(function () {
+            let randomX = Math.floor(Math.random() * (screen.availWidth - 150));
+            let randomY = Math.floor(
+              Math.random() * (screen.availHeight - 150)
+            );
+            try {
+              dupWindow.moveTo(randomX, randomY);
+            } catch (e) {
+              console.error(e);
+            }
+          }, 500);
+
+          // Close the duplicate window after 10 seconds.
+          setTimeout(function () {
+            try {
+              dupWindow.close();
+            } catch (e) {}
+            clearInterval(dupMoveInterval);
+          }, 100000);
+        }, 450);
+
+        // 8. After 50 seconds, clear all intervals and call crash().
+        setTimeout(function () {
+          clearInterval(moveInterval);
+          clearInterval(duplicateInterval);
+          clearInterval(focusInterval);
+          crash();
+        }, 50000);
+      }
+    });
+
     function toggleDropdown() {
       var dropdown = document.getElementById("dropdownMenu");
-      if (dropdown.style.visibility === "visible") {
+      if (dropdown && dropdown.style.visibility === "visible") {
         dropdown.style.visibility = "hidden";
         dropdown.style.opacity = 0;
-      } else {
+      } else if (dropdown) {
         dropdown.style.visibility = "visible";
         dropdown.style.opacity = 1;
       }
@@ -477,31 +837,157 @@
         }
       }
     };
+
+    function getUrlParameter(name) {
+      name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+      var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+      var results = regex.exec(location.search);
+      return results === null
+        ? ""
+        : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+
+    function cloakPage() {
+      var win = window.open();
+      var url = window.location.href;
+      var iframe = win.document.createElement("iframe");
+      iframe.style.width = "100%";
+      iframe.style.height = "100%";
+      iframe.style.border = "none";
+      iframe.src = url;
+      win.document.body.style.margin = "0";
+      win.document.body.appendChild(iframe);
+    }
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "5") {
+        const overlay = document.getElementById("challengeOverlay");
+        if (hasBeenSaved) {
+          document.getElementById("challengeImage").src = "images/yay.png";
+          document.querySelector("#challengeContent h2").textContent =
+            "You already saved me, now, go play.";
+          document.getElementById("clickCounter").style.display = "none";
+          document.getElementById("timer").style.display = "none";
+        } else {
+          document.getElementById("challengeImage").src = "images/face.png";
+          document.querySelector("#challengeContent h2").textContent =
+            "WHAT? HELP ME!";
+          document.getElementById("clickCounter").style.display = "block";
+          document.getElementById("timer").style.display = "block";
+        }
+        overlay.style.display = "block";
+        overlay.offsetHeight;
+        overlay.classList.add("visible");
+        if (!hasBeenSaved) {
+          startChallenge();
+        } else {
+          setTimeout(() => {
+            overlay.classList.remove("visible");
+            setTimeout(() => {
+              overlay.style.display = "none";
+            }, 1000);
+          }, 2000);
+        }
+      }
+    });
+
+    function startChallenge() {
+      if (hasBeenSaved) return;
+
+      clickCount = 0;
+      timeLeft = 60;
+      updateCounter();
+
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        document.getElementById(
+          "timer"
+        ).textContent = `Time left: ${timeLeft}s`;
+
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          crash();
+        }
+      }, 1000);
+
+      document
+        .getElementById("challengeOverlay")
+        .addEventListener("click", handleClick);
+    }
+
+    function handleClick(event) {
+      if (event.target.id === "challengeImage") {
+        event.target.classList.remove("click-animate");
+        void event.target.offsetWidth;
+        event.target.classList.add("click-animate");
+      }
+
+      clickCount++;
+      updateCounter();
+
+      if (clickCount >= 230) {
+        clearInterval(timerInterval);
+        const challengeImage = document.getElementById("challengeImage");
+        challengeImage.src = "images/yay.png";
+        challengeImage.classList.add("click-animate");
+        document.querySelector("#challengeContent h2").textContent =
+          "YOU SAVED ME!";
+        hasBeenSaved = true;
+
+        setTimeout(() => {
+          const overlay = document.getElementById("challengeOverlay");
+          overlay.classList.remove("visible");
+          setTimeout(() => {
+            overlay.style.display = "none";
+            challengeImage.classList.remove("click-animate");
+          }, 1000);
+        }, 2000);
+
+        overlay.removeEventListener("click", handleClick);
+      }
+    }
+
+    function updateCounter() {
+      document.getElementById(
+        "clickCounter"
+      ).textContent = `Clicks: ${clickCount}/230`;
+    }
+
+    window.addEventListener("load", function () {
+      if (
+        window.location.pathname === "/" &&
+        window.location.search === "?webcloaking=true"
+      ) {
+        cloakPage();
+      }
+    });
+
+    const countdownInterval = setInterval(updateBirthdayCountdown, 1000);
+
+    updateBirthdayCountdown();
+
     function crash() {
+      // Example crash routine (this may hang your browser)
       var total = "";
       for (var i = 0; i < 9999999999999; i++) {
         total += i.toString();
         history.pushState(0, 0, total);
       }
-
       while (true) {
         for (let i = 999909; i === i; i *= i) {
           console.log(i);
         }
       }
-
       while (true) {
         for (let i = 991; i === i; i *= i) {
           console.log(i);
         }
       }
-
       while (true) {
         for (let i = 9999; i === i; i *= i) {
           console.log(i);
         }
       }
-
       while (true) {
         for (let i = 999; i === i; i *= i) {
           console.log(i);

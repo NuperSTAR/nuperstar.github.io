@@ -1,205 +1,344 @@
-if this hangs then refresh
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Glass Calculator</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-<head>
-  <script type="text/javascript"
-    src="https://codesandbox.io/public/sse-hooks/sse-hooks.7a01a0f7b828579aff40884fc77e13bc.js"></script>
-  <script type="text/javascript" src="https://codesandbox.io/static/js/banner.d9cb10a38.js"></script>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: linear-gradient(135deg, #1a1a2e, #16213e);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      }
 
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Calculator</title>
-  <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background-color: #000;
-      margin: 0;
-    }
+      .calculator {
+        width: 320px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 25px;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+      }
 
-    .calculator {
-      width: 300px;
-      background-color: #333;
-      border-radius: 20px;
-      padding: 20px;
-    }
+      .screen {
+        width: 100%;
+        height: 80px;
+        background: rgba(0, 0, 0, 0.3);
+        color: white;
+        text-align: right;
+        padding: 15px;
+        margin-bottom: 25px;
+        font-size: 2.2em;
+        border: none;
+        border-radius: 12px;
+        box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
+        font-weight: 300;
+      }
 
-    .screen {
-      width: 100%;
-      height: 60px;
-      background-color: #000;
-      color: white;
-      text-align: right;
-      padding: 10px;
-      margin-bottom: 20px;
-      font-size: 2em;
-      border: none;
-      border-radius: 10px;
-    }
+      .button-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+      }
 
-    .button-row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
+      .button {
+        width: 65px;
+        height: 65px;
+        background: rgba(255, 255, 255, 0.05);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        font-size: 1.5em;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(4px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
 
-    .button {
-      width: 64px;
-      height: 64px;
-      background-color: #555;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      font-size: 1.5em;
-      cursor: pointer;
-    }
+      .button:hover {
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateY(-2px);
+      }
 
-    .button.orange {
-      background-color: orange;
-    }
+      .button:active {
+        transform: translateY(1px);
+        box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+      }
 
-    .button.zero {
-      flex-grow: 1;
-      border-radius: 30px;
-    }
+      .button.orange {
+        background: rgba(255, 159, 0, 0.8);
+      }
 
-    .button:active {
-      background-color: #ddd;
-    }
-  </style>
-</head>
+      .button.orange:hover {
+        background: rgba(255, 159, 0, 0.9);
+      }
 
-<body>
-  <div class="calculator">
-    <input type="text" class="screen" disabled />
-    <div class="button-row">
-      <button class="button">AC</button>
-      <button class="button">+/-</button>
-      <button class="button">%</button>
-      <button class="button orange">÷</button>
+      .button.function {
+        background: rgba(152, 152, 152, 0.5);
+      }
+
+      .button.function:hover {
+        background: rgba(152, 152, 152, 0.7);
+      }
+
+      .button.zero {
+        width: 145px;
+        border-radius: 35px;
+        grid-column: span 2;
+        text-align: left;
+        padding-left: 25px;
+        justify-content: flex-start;
+      }
+
+      #calculation-history {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.9em;
+        height: 20px;
+        margin-top: -20px;
+        margin-bottom: 10px;
+        text-align: right;
+        padding-right: 15px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="calculator">
+      <div id="calculation-history"></div>
+      <input type="text" class="screen" disabled />
+      <div class="button-row">
+        <button class="button function">AC</button>
+        <button class="button function">+/-</button>
+        <button class="button function">%</button>
+        <button class="button orange">÷</button>
+      </div>
+      <div class="button-row">
+        <button class="button">7</button>
+        <button class="button">8</button>
+        <button class="button">9</button>
+        <button class="button orange">×</button>
+      </div>
+      <div class="button-row">
+        <button class="button">4</button>
+        <button class="button">5</button>
+        <button class="button">6</button>
+        <button class="button orange">-</button>
+      </div>
+      <div class="button-row">
+        <button class="button">1</button>
+        <button class="button">2</button>
+        <button class="button">3</button>
+        <button class="button orange">+</button>
+      </div>
+      <div class="button-row">
+        <button class="button zero">0</button>
+        <button class="button">.</button>
+        <button class="button orange">=</button>
+      </div>
     </div>
-    <div class="button-row">
-      <button class="button">7</button>
-      <button class="button">8</button>
-      <button class="button">9</button>
-      <button class="button orange">×</button>
-    </div>
-    <div class="button-row">
-      <button class="button">4</button>
-      <button class="button">5</button>
-      <button class="button">6</button>
-      <button class="button orange">-</button>
-    </div>
-    <div class="button-row">
-      <button class="button">1</button>
-      <button class="button">2</button>
-      <button class="button">3</button>
-      <button class="button orange">+</button>
-    </div>
-    <div class="button-row">
-      <button class="button zero">0</button>
-      <button class="button">.</button>
-      <button class="button orange">=</button>
-    </div>
-  </div>
 
-</body>
+    <script>
+      const screen = document.querySelector(".screen");
+      const historyDisplay = document.getElementById("calculation-history");
 
-<script>
-  const screen = document.querySelector(".screen");
+      let currentInput = "";
+      let previousInput = "";
+      let operation = null;
+      let shouldResetScreen = false;
 
-  let currentInput = "";
-  let previousInput = "";
-  let operation = null;
+      const clear = () => {
+        currentInput = "";
+        previousInput = "";
+        operation = null;
+        historyDisplay.textContent = "";
+        updateScreen("0");
+      };
 
-  const clear = () => {
-    currentInput = "";
-    previousInput = "";
-    operation = null;
-    updateScreen(0);
-  };
+      const appendNumber = (number) => {
+        if (shouldResetScreen) {
+          currentInput = "";
+          shouldResetScreen = false;
+        }
 
-  const appendNumber = (number) => {
-    if (number === "." && currentInput.includes(".")) return;
-    currentInput = currentInput.toString() + number.toString();
-    updateScreen(currentInput);
-  };
-
-  const chooseOperation = (op) => {
-    if (currentInput === "") return;
-    if (previousInput !== "") {
-      compute();
-    }
-    operation = op;
-    previousInput = currentInput;
-    currentInput = "";
-  };
-
-  const compute = () => {
-    let computation;
-    const prev = parseFloat(previousInput);
-    const current = parseFloat(currentInput);
-    if (isNaN(prev) || isNaN(current)) return;
-    switch (operation) {
-      case "+":
-        computation = prev + current;
-        break;
-      case "-":
-        computation = prev - current;
-        break;
-      case "×":
-        computation = prev * current;
-        break;
-      case "÷":
-        if (current === 0) {
-          alert("no");
+        // Don't allow multiple zeros at start
+        if (currentInput === "0" && number !== ".") {
+          currentInput = number;
+          updateScreen(currentInput);
           return;
         }
-        computation = prev / current;
-        break;
-      default:
-        return;
-    }
-    currentInput = computation;
-    operation = undefined;
-    previousInput = "";
-    updateScreen(currentInput);
-  };
 
-  const updateScreen = (number) => {
-    screen.value = number;
-  };
+        // Handle decimal point
+        if (number === "." && currentInput.includes(".")) return;
+        if (number === "." && currentInput === "") {
+          currentInput = "0.";
+        } else {
+          currentInput = currentInput.toString() + number.toString();
+        }
 
-  document.querySelectorAll(".button").forEach((button) => {
-    button.addEventListener("click", () => {
-      switch (button.innerText) {
-        case "AC":
-          clear();
-          break;
-        case "+/-":
-          if (currentInput !== "") currentInput = currentInput * -1;
-          updateScreen(currentInput);
-          break;
-        case "%":
-          if (currentInput !== "") currentInput = currentInput / 100;
-          updateScreen(currentInput);
-          break;
-        case "=":
-          compute();
-          break;
-        default:
-          if (isNaN(button.innerText)) {
-            chooseOperation(button.innerText);
-          } else {
-            appendNumber(button.innerText);
+        updateScreen(currentInput);
+      };
+
+      const chooseOperation = (op) => {
+        if (currentInput === "") {
+          // If no current input but we have previous input, just change operation
+          if (previousInput !== "") {
+            operation = op;
+            updateHistory();
           }
-          break;
-      }
-    });
-  });
-</script>
+          return;
+        }
 
+        if (previousInput !== "") {
+          compute();
+        }
+
+        operation = op;
+        previousInput = currentInput;
+        currentInput = "";
+        updateHistory();
+      };
+
+      const updateHistory = () => {
+        historyDisplay.textContent = `${previousInput} ${operation}`;
+      };
+
+      const compute = () => {
+        if (previousInput === "" || currentInput === "") return;
+
+        let computation;
+        const prev = parseFloat(previousInput);
+        const current = parseFloat(currentInput);
+
+        if (isNaN(prev) || isNaN(current)) return;
+
+        switch (operation) {
+          case "+":
+            computation = prev + current;
+            break;
+          case "-":
+            computation = prev - current;
+            break;
+          case "×":
+            computation = prev * current;
+            break;
+          case "÷":
+            if (current === 0) {
+              alert("Cannot divide by zero");
+              return;
+            }
+            computation = prev / current;
+            break;
+          default:
+            return;
+        }
+
+        // Format the result to handle floating point precision issues
+        computation = parseFloat(computation.toFixed(10));
+
+        // If the result is a whole number, remove the decimal part
+        if (computation % 1 === 0) {
+          computation = computation.toString();
+        } else {
+          // Otherwise format it nicely
+          computation = computation.toString();
+        }
+
+        historyDisplay.textContent = `${previousInput} ${operation} ${currentInput} =`;
+        currentInput = computation;
+        operation = null;
+        previousInput = "";
+        shouldResetScreen = true;
+        updateScreen(currentInput);
+      };
+
+      const updateScreen = (number) => {
+        // Format large numbers with commas
+        if (number !== "" && !isNaN(number)) {
+          const parts = number.toString().split(".");
+          parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+          screen.value = parts.join(".");
+        } else {
+          screen.value = number;
+        }
+      };
+
+      const handleNegate = () => {
+        if (currentInput === "") return;
+        currentInput = (parseFloat(currentInput) * -1).toString();
+        updateScreen(currentInput);
+      };
+
+      const handlePercent = () => {
+        if (currentInput === "") return;
+        currentInput = (parseFloat(currentInput) / 100).toString();
+        updateScreen(currentInput);
+      };
+
+      document.querySelectorAll(".button").forEach((button) => {
+        button.addEventListener("click", () => {
+          switch (button.innerText) {
+            case "AC":
+              clear();
+              break;
+            case "+/-":
+              handleNegate();
+              break;
+            case "%":
+              handlePercent();
+              break;
+            case "=":
+              compute();
+              break;
+            case "+":
+            case "-":
+            case "×":
+            case "÷":
+              chooseOperation(button.innerText);
+              break;
+            default:
+              appendNumber(button.innerText);
+              break;
+          }
+        });
+      });
+
+      // Add keyboard support
+      document.addEventListener("keydown", (event) => {
+        if (event.key >= "0" && event.key <= "9") appendNumber(event.key);
+        if (event.key === ".") appendNumber(".");
+        if (event.key === "+") chooseOperation("+");
+        if (event.key === "-") chooseOperation("-");
+        if (event.key === "*") chooseOperation("×");
+        if (event.key === "/") {
+          event.preventDefault(); // Prevent browser's search functionality
+          chooseOperation("÷");
+        }
+        if (event.key === "Enter" || event.key === "=") compute();
+        if (event.key === "Escape") clear();
+        if (event.key === "Backspace") {
+          currentInput = currentInput.slice(0, -1);
+          if (currentInput === "") currentInput = "0";
+          updateScreen(currentInput);
+        }
+      });
+
+      // Initialize
+      clear();
+    </script>
+  </body>
 </html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Previous head content remains the same until style -->
+  <head>
+    <link rel="icon" type="image/x-icon" href="icon.ico" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NuperSITE - Funny Shooter</title>
+    <style>
+      /* Previous styles remain the same until game-container */
+      body {
+        cursor: url("cursor.png"), default;
+        font-family: "Lexend", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #1b1b1bff;
+        color: white;
+      }
+
+      .header {
+        background-color: rgba(68, 68, 68, 0.2);
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        border-radius: 50px;
+        position: fixed;
+        width: calc(100% - 40px);
+        top: 0;
+        left: 0;
+        right: 0;
+        margin: 10px;
+        z-index: 100;
+        box-sizing: border-box;
+        backdrop-filter: blur(10px);
+      }
+
+      .iconimage {
+        border-radius: 10px;
+      }
+
+      .header img {
+        height: 50px;
+      }
+
+      .header .title {
+        font-size: 24px;
+        margin-right: 10px;
+      }
+
+      .navbar {
+        margin-left: auto;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .navbar a {
+        color: white;
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 20px;
+        transition: background-color 0.3s;
+        white-space: nowrap;
+      }
+
+      .navbar a:hover {
+        cursor: url("link.png"), pointer;
+        background-color: #555;
+      }
+
+      .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 80px auto 20px;
+        padding: 20px;
+        max-width: 1200px;
+      }
+
+      .game-container {
+        background-color: rgba(68, 68, 68, 0.2);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 20px;
+        width: 100%;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        position: relative;
+      }
+
+      .game-view {
+        position: relative;
+        width: 100%;
+        height: 600px;
+        border-radius: 10px;
+        overflow: hidden;
+        background-color: rgba(51, 51, 51, 0.2);
+      }
+
+      .game-embed {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+        transform: scale(1);
+        transition: filter 0.5s ease, transform 0.5s ease;
+      }
+
+      .game-embed.background {
+        filter: blur(10px) brightness(0.7);
+        transform: scale(1.1);
+        pointer-events: none;
+      }
+
+      .game-embed.active {
+        filter: none;
+        transform: scale(1);
+        z-index: 2;
+      }
+
+      .game-start-screen {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        z-index: 3;
+        transition: opacity 0.5s ease;
+      }
+
+      .game-title-large {
+        font-size: 48px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 30px;
+        color: #fff;
+        text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      }
+
+      .start-button-container {
+        position: relative;
+        z-index: 2;
+      }
+
+      .start-button,
+      .fullscreen-button {
+        backdrop-filter: blur(10px);
+        font-family: "Lexend", sans-serif;
+        padding: 15px 30px;
+        font-size: 20px;
+        background-color: rgba(59, 59, 59, 0.2);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .start-button:hover,
+      .fullscreen-button:hover {
+        background-color: rgba(34, 34, 34, 0.1);
+        backdrop-filter: blur(5px);
+        transform: scale(1.05);
+      }
+
+      .loading-circle-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 200px;
+        height: 200px;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s;
+        z-index: 1;
+      }
+
+      .loading-circle {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border: 4px solid rgba(255, 255, 255, 0.1);
+        border-top: 4px solid #fff;
+        border-radius: 50%;
+        animation: spin 2s linear infinite;
+      }
+
+      .loading-blur {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.2) 0%,
+          transparent 70%
+        );
+        border-radius: 50%;
+        filter: blur(20px);
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(0.8);
+          opacity: 0.5;
+        }
+        50% {
+          transform: scale(1.2);
+          opacity: 0.8;
+        }
+        100% {
+          transform: scale(0.8);
+          opacity: 0.5;
+        }
+      }
+
+      .loading .loading-circle-container {
+        opacity: 1;
+      }
+
+      .game-controls {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        z-index: 10;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .game-controls.active {
+        opacity: 1;
+      }
+
+      .game-description {
+        background-color: rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(5px);
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+      }
+
+      .game-info {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #ddd;
+      }
+
+      .error-message {
+        color: #ff4444;
+        text-align: center;
+        margin-top: 10px;
+        display: none;
+      }
+    </style>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <script>
+    function initGame() {
+      const gameEmbed = document.querySelector(".game-embed");
+      gameEmbed.src = "funnyshooter/funny.html";
+      gameEmbed.classList.add("background");
+    }
+
+    function startGame() {
+      const startScreen = document.querySelector(".game-start-screen");
+      const gameEmbed = document.querySelector(".game-embed");
+      const gameControls = document.querySelector(".game-controls");
+      const errorMessage = document.querySelector(".error-message");
+
+      startScreen.classList.add("loading");
+
+      // The game is already loaded as background, just need to make it active
+      setTimeout(() => {
+        startScreen.style.opacity = "0";
+        gameEmbed.classList.remove("background");
+        gameEmbed.classList.add("active");
+        gameControls.classList.add("active");
+
+        setTimeout(() => {
+          startScreen.style.display = "none";
+        }, 500);
+      }, 500);
+    }
+
+    function toggleFullscreen() {
+      const iframe = document.querySelector(".game-embed");
+      if (!document.fullscreenElement) {
+        if (iframe.requestFullscreen) {
+          iframe.requestFullscreen();
+        } else if (iframe.webkitRequestFullscreen) {
+          iframe.webkitRequestFullscreen();
+        } else if (iframe.msRequestFullscreen) {
+          iframe.msRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        }
+      }
+    }
+
+    // Initialize the game as soon as the page loads
+    window.onload = initGame;
+  </script>
+  <body>
+    <div class="header">
+      <img src="images/icon.png" class="iconimage" alt="Logo" />
+      <div class="title">⠀NuperSITE</div>
+      <div class="navbar">
+        <a href="index.html">Home</a>
+        <a href="stuff.html">Stuff</a>
+        <a href="tools.html">Tools</a>
+        <a href="aichat.html">AI</a>
+        <a href="troubleshooting.html">Troubleshooting</a>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="game-container">
+        <div class="game-view">
+          <iframe class="game-embed" allowfullscreen></iframe>
+          <div class="game-start-screen">
+            <h1 class="game-title-large">Funny Shooter 2</h1>
+            <div class="loading-circle-container">
+              <div class="loading-blur"></div>
+              <div class="loading-circle"></div>
+            </div>
+            <div class="start-button-container">
+              <button class="start-button" onclick="startGame()">Start</button>
+            </div>
+            <div class="error-message">
+              Failed to load the game. Please try again.
+            </div>
+          </div>
+          <div class="game-controls">
+            <button class="fullscreen-button" onclick="toggleFullscreen()">
+              Fullscreen
+            </button>
+          </div>
+        </div>
+        <div class="game-description">
+          <h2 class="game-title">Funny Shooter 2</h2>
+          <div class="game-info">
+            <p><strong>Genre:</strong> FPS</p>
+            <p><strong>Developer:</strong> GoGoMan</p>
+            <p><strong>Release Date:</strong> August 2022</p>
+            <p>
+              <strong>Description:</strong> Funny Shooter 2 is a fun FPS game
+              where you fight hordes of absurd enemies! Use various weapons to
+              slay these bizarre beings and upgrade your weapons arsenal as you
+              progress.
+            </p>
+            <p>
+              <strong>Controls:</strong>
+            </p>
+            <ul>
+              <li><strong>Mouse:</strong> Look around</li>
+              <li><strong>WASD:</strong> Movement</li>
+              <li><strong>W + Shift:</strong> Run</li>
+              <li><strong>Space:</strong> Jump</li>
+              <li><strong>Left Mouse Button:</strong> Shoot</li>
+              <li><strong>Right Mouse Button (Hold):</strong> Aim</li>
+              <li><strong>Mouse Wheel:</strong> Next/leading weapon</li>
+              <li><strong>1-7:</strong> Weapon hotkeys</li>
+              <li><strong>R:</strong> Reload</li>
+              <li><strong>G:</strong> Throw a grenade</li>
+              <li><strong>T:</strong> Inspect the weapon</li>
+              <li><strong>E:</strong> Remove/remove weapon</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
