@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="icon" type="image/x-icon" href="icon.ico" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NuperSITE - Image Generator</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Previous styles remain the same */
+      body {
+        cursor: url("cursor.png"), default;
+        font-family: "Lexend", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #1b1b1bff;
+        color: white;
+        min-height: 100vh;
+      }
+
+      .header {
+        background-color: rgba(31, 31, 31, 0.3);
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        border-radius: 50px;
+        position: fixed;
+        width: calc(100% - 40px);
+        top: 0;
+        left: 0;
+        right: 0;
+        margin: 10px;
+        z-index: 100;
+        box-sizing: border-box;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .header img {
+        height: 50px;
+        border-radius: 10px;
+        cursor: url("link.png"), pointer;
+      }
+
+      .header .title {
+        font-size: 24px;
+        margin-left: 10px;
+        margin-right: 10px;
+      }
+
+      .navbar {
+        margin-left: auto;
+        display: flex;
+        gap: 10px;
+      }
+
+      .navbar a {
+        color: white;
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 20px;
+        transition: background-color 0.3s;
+        white-space: nowrap;
+      }
+
+      .navbar a:hover {
+        cursor: url("link.png"), pointer;
+        background-color: rgba(85, 85, 85, 0.8);
+      }
+
+      .switcher {
+        margin: 0;
+        padding: 0;
+        /* Remove fixed positioning styles if any */
+      }
+
+      .switcher select {
+        padding: 8px 15px;
+        font-family: "Lexend", sans-serif;
+        font-size: 14px;
+        border: none;
+        border-radius: 15px;
+        background-color: #444;
+        color: white;
+        cursor: pointer;
+        outline: none;
+        transition: background-color 0.3s;
+      }
+
+      .switcher select:hover {
+        background-color: #555;
+      }
+      .content {
+        display: flex;
+        flex-direction: column;
+        padding-top: 80px;
+        min-height: calc(100vh - 120px);
+      }
+
+      .generator-container {
+        flex-grow: 1;
+        background-color: #222;
+        padding: 30px;
+        border-radius: 15px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .input-container {
+        background-color: #333;
+        padding: 15px;
+        border-radius: 25px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        width: 100%;
+        max-width: 600px;
+        flex-wrap: wrap;
+      }
+
+      .checkbox-container {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-family: "Lexend", sans-serif;
+        font-size: 14px;
+        color: #ddd;
+      }
+      input[type="checkbox"] {
+        cursor: pointer;
+        width: 16px;
+        height: 16px;
+      }
+
+      input[type="checkbox"]:hover {
+        outline: 1px solid #4caf50;
+      }
+
+      input {
+        flex-grow: 1;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 20px;
+        background-color: #444;
+        color: white;
+        font-family: "Lexend", sans-serif;
+        font-size: 16px;
+        transition: background-color 0.3s;
+      }
+
+      input:focus {
+        outline: none;
+        background-color: #555;
+      }
+
+      button {
+        padding: 12px 25px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        font-family: "Lexend", sans-serif;
+        font-size: 16px;
+        cursor: url("link.png"), pointer;
+        transition: all 0.3s;
+      }
+
+      button:hover {
+        background-color: #45a049;
+        transform: translateY(-1px);
+      }
+
+      button:active {
+        transform: translateY(1px);
+      }
+
+      #imageContainer {
+        text-align: center;
+        width: 100%;
+        max-width: 800px;
+        min-height: 200px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .generated-image {
+        max-width: 100%;
+        max-height: 500px;
+        object-fit: contain;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .download-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: white;
+        text-decoration: none;
+        border-radius: 20px;
+        font-weight: 500;
+        transition: all 0.3s;
+      }
+
+      .download-btn:hover {
+        background-color: #45a049;
+        transform: translateY(-1px);
+      }
+
+      .loading {
+        padding: 20px;
+        font-size: 18px;
+        color: #888;
+      }
+
+      .error {
+        padding: 20px;
+        color: #ff6b6b;
+        background-color: rgba(255, 107, 107, 0.1);
+        border-radius: 10px;
+        text-align: center;
+      }
+
+      .prompt-text {
+        color: #888;
+        font-size: 14px;
+        margin-top: 10px;
+      }
+      .gradient-animation {
+        font-weight: bold; /* Make text bold */
+  background: linear-gradient(
+    108deg,
+    #0894ff,
+    #c959dd 34%,
+    #ff2e54 68%,
+    #ff9004
+  );
+  background-size: 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-fade-text 1.5s forwards;
+}
+
+@keyframes gradient-fade-text {
+  0% {
+    opacity: 0.5;
+    background-position: 0%;
+  }
+  80% {
+    opacity: 1;
+    background-position: 100%;
+  }
+  100% {
+    opacity: 0;
+    background-position: 100%;
+  }
+}
+
+
+
+
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <img src="images/icon.png" class="iconimage" alt="Logo" />
+      <div class="title">NuperSITE</div>
+      <div class="switcher">
+        <select id="pageSwitcher" onchange="switchPage()">
+          <option value="image.html" selected>Image Generation</option>
+          <option value="aichat.html">AI Chat Bot</option>
+        </select>
+      </div>
+      <div class="navbar">
+        <a href="index.html">Home</a>
+        <a href="stuff.html">Stuff</a>
+        <a href="tools.html">Tools</a>
+        <a href="aichat.html">AI</a>
+        <a href="troubleshooting.html">Troubleshooting</a>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="generator-container">
+        <div class="image-container" id="imageContainer"></div>
+        <div class="input-container">
+          <input
+            type="text"
+            id="promptInput"
+            placeholder="Enter an image description..."
+            onkeypress="handleKeyPress(event)"
+          />
+          <label>
+            <input type="checkbox" id="improveCheckbox" />
+            <span>Improve Response</span>
+          </label>
+          <button onclick="generateImage()">Generate</button>
+        </div>
+        
+        </div>
+      </div>
+    </div>
+
+    <script>
+console.log("Why is there 404? Im too lazy to fix :P");
+
+async function generateImage() {
+  const input = document.getElementById("promptInput");
+  const improveCheckbox = document.getElementById("improveCheckbox");
+  const imageContainer = document.getElementById("imageContainer");
+  let prompt = input.value.trim();
+
+  if (!prompt) {
+    imageContainer.innerHTML =
+      '<div class="error">Please enter a description for the image.</div>';
+    return;
+  }
+
+  imageContainer.innerHTML =
+    '<div class="loading">Processing request, may take a while...</div>';
+
+  // Step 1: Check if "Improve response" is checked
+  if (improveCheckbox.checked) {
+    try {
+      const improveRes = await fetch(
+        `https://shortresponses.nupersite.org?prompt=${encodeURIComponent(
+          prompt
+        )}`
+      );
+      if (!improveRes.ok) {
+        throw new Error(`Improvement request failed (${improveRes.status})`);
+      }
+      const improvedPrompt = await improveRes.text();
+      input.value = improvedPrompt;
+
+      // Add gradient animation
+      input.classList.add("gradient-animation");
+      setTimeout(
+        () => input.classList.remove("gradient-animation"),
+        1500
+      );
+
+      prompt = improvedPrompt; // Update prompt for image generation
+    } catch (error) {
+      imageContainer.innerHTML = `
+        <div class="error">
+          Failed to improve text: ${error.message}<br>
+          Proceeding with the original input.
+        </div>`;
+    }
+  }
+
+  // Step 2: Generate the image
+  try {
+    const res = await fetch(
+      `https://api.nupersite.org/?prompt=${encodeURIComponent(prompt)}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "image/*",
+        },
+      }
+    );
+
+    if (!res.ok) {
+      throw new Error(`Image generation failed (${res.status})`);
+    }
+
+    const blob = await res.blob();
+    const imageUrl = URL.createObjectURL(blob);
+
+    imageContainer.innerHTML = `
+      <img src="${imageUrl}" alt="${prompt}" class="generated-image" />
+      <a href="${imageUrl}" download="nupersite-${Date.now()}.png" class="download-btn">
+        Download Image
+      </a>
+      <div class="prompt-text">Generated from: "${prompt}"</div>
+    `;
+  } catch (error) {
+    imageContainer.innerHTML = `
+      <div class="error">
+        Failed to generate image: ${error.message}<br>
+        Please try again later.
+      </div>
+    `;
+  }
+}
+
+function handleKeyPress(event) {
+  if (event.key === "Enter") {
+    generateImage();
+  }
+}
+
+// Clear input on page load
+window.addEventListener("load", () => {
+  document.getElementById("promptInput").value = "";
+});
+
+
+function switchPage() {
+        const switcher = document.getElementById("pageSwitcher");
+        window.location.href = switcher.value;
+      }
+    </script>
+  </body>
+</html>
